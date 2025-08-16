@@ -12,10 +12,17 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-  // origin: ['http://sifon-domain.com', /* add other brand domains */],
-  origin: "*",
+  origin: [
+    'https://sifon.sandmgroup.in',      // subdomain
+    'https://livora.sandmgroup.in',      // subdomain
+    'https://enencia.sandmgroup.in',      // subdomain
+    'https://www.sandmgroup.in',        // main domain  (optional)
+    'https://sandmgroup.in'             // optional
+  ],
   methods: ['GET'],
+  credentials: true
 }));
+
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGODB_URI, {

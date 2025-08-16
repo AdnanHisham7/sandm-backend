@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S&M Group - Crafting Digital Presence for Visionary Brands</title>
+  <meta name="description"
+    content="S&M Group empowers visionary brands with expert marketing strategies, efficient distribution networks, and comprehensive product management. Discover our services and brands.">
+  <meta name="keywords"
+    content="S&M Group, digital marketing, brand management, product distribution, visionary brands, marketing strategies">
+  <meta name="author" content="S&M Group">
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow">
+  <meta property="og:title" content="S&M Group - Crafting Digital Presence for Visionary Brands">
+  <meta property="og:description"
+    content="Empowering brands through marketing and distribution excellence. Explore our services and subsidiary brands at S&M Group.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.sandmgroup.in">
+  <meta property="og:image" content="https://www.sandmgroup.in/assets/logo.png">
+  <meta property="og:site_name" content="S&M Group">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="S&M Group - Crafting Digital Presence for Visionary Brands">
+  <meta name="twitter:description"
+    content="Empowering brands through marketing and distribution excellence. Explore our services and subsidiary brands at S&M Group.">
+  <meta name="twitter:image" content="https://www.sandmgroup.in/assets/logo.png">
+  <link rel="canonical" href="https://www.sandmgroup.in">
+  <link rel="icon" href="/assets/logo.png" type="image/x-icon">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .gradient-bg {
+      background: radial-gradient(ellipse at bottom center,
+          #66b3ff 0%,
+          #66b3ff 10%,
+          #004080 55%,
+          #00264d 70%,
+          #000d1a 85%,
+          #000000 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shape-divider {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: rgb(255, 255, 255);
+      z-index: 10;
+    }
+
+    .gradient-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(26, 26, 46, 0.8) 0%, transparent 100%);
+      z-index: 1;
+    }
+
+    .gradient-bg::before,
+    .gradient-bg::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 104, 238, 0.1) 0%, rgba(123, 104, 238, 0.1) 50%, transparent 100%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .gradient-bg::before {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      right: 10%;
+      animation-delay: 0s;
+    }
+
+    .gradient-bg::after {
+      width: 200px;
+      height: 200px;
+      bottom: 20%;
+      left: 15%;
+      animation-delay: 3s;
+    }
+
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(10px);
+    }
+
+    .fade-in.visible {
+      animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide-in-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-secondary {
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .accordion-item {
+      transition: all 0.3s ease;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .accordion-content.open {
+      max-height: 200px;
+    }
+
+    .service-card {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-left: 4px solid transparent;
+    }
+
+    .service-card:hover {
+      border-left-color: #7c3aed;
+      background: rgba(124, 58, 237, 0.05);
+      transform: translateX(8px);
+    }
+
+    .work-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .work-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .work-card:hover::before {
+      left: 100%;
+    }
+
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #7c3aed;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .counter {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .slideshow-wrapper {
+      position: relative;
+      padding-top: 66.6667%;
+    }
+
+    .slideshow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    .timer-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      background: #7c3aed;
+      width: 0;
+    }
+
+    .slide.active .timer-bar {
+      animation: timer 5s linear forwards;
+    }
+
+    @keyframes timer {
+      from {
+        width: 0;
+      }
+
+      to {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+  <nav class="fixed top-0 w-full backdrop-blur-md z-50 transition-all duration-300" id="navbar">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <img src="/assets/logo.png" alt="Logo" class="h-12 w-auto brightness-1000" />
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="nav-link font-light text-sm text-white">HOME</a>
+          <a href="#about" class="nav-link font-light text-sm text-white">ABOUT US</a>
+          <a href="#brands" class="nav-link font-light text-sm text-white">OUR BRANDS</a>
+          <a href="#services" class="nav-link font-light text-sm text-white">SERVICES</a>
+        </div>
+        <a href="#contact"
+          class="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 hover:shadow-lg">
+          Contact Us
+        </a>
+        <button class="md:hidden text-white" id="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <section id="home" class="gradient-bg min-h-screen flex items-center relative overflow-hidden">
+    <div class="shape-divider"></div>
+    <div class="absolute inset-0">
+      <div class="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl floating"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl floating"
+        style="animation-delay: -3s;"></div>
+    </div>
+    <div class="mx-auto px-6 pt-40 relative z-10">
+      <div class="grid grid-cols-1 gap-12 items-center">
+        <div class="text-center">
+          <div class="fade-in">
+            <div class="inline-flex items-center bg-purple-600/20 px-4 py-2 rounded-full mb-8 backdrop-blur-sm">
+              <i class="fas fa-rocket text-purple-400 mr-2"></i>
+              <span class="text-purple-300 text-sm font-medium">WE HELP BRANDS GROW, DIGITALLY</span>
+            </div>
+          </div>
+          <h1 class="text-5xl md:text-6xl font-bold text-white mb-8 fade-in" style="animation-delay: 0.2s;">
+            Crafting Digital Presence for <br>
+            <span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Visionary Brands
+            </span>
+          </h1>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 fade-in"
+            style="animation-delay: 0.4s;">
+            <button class="btn-primary px-8 py-4 text-white rounded-full font-semibold cursor-pointer">
+              Let's Talk Now
+            </button>
+            <button
+              class="btn-secondary border border-white/30 px-8 py-4 text-white rounded-full font-semibold cursor-pointer">
+              Explore Our Brands
+            </button>
+          </div>
+          <div
+            class="mx-auto max-w-2xl grid grid-cols-3 md:grid-cols-3 gap-8 bg-white/10 backdrop-blur-md rounded-2xl p-6 fade-in"
+            style="animation-delay: 0.6s;">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-white counter" data-target="3" data-suffix="">0</div>
+              <div class="text-purple-300 text-xs font-light">Brands</div>
+            </div>
+            <div
+              class="relative text-center before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:h-10 before:border-l before:border-white/30">
+              <div class="text-3xl font-bold text-white counter" data-target="100" data-suffix="+">0</div>
+              <div class="text-purple-300 text-xs">Products Managed</div>
+            </div>
+            <div
+              class="relative text-center before:absolute before:top-1/2 before:-translate-y-1/2 before:left-0 before:h-10 before:border-l before:border-white/30">
+              <div class="text-3xl font-bold text-white counter" data-target="10" data-suffix="+">0</div>
+              <div class="text-purple-300 text-xs">Years of Experience</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-in" style="animation-delay: 0.8s;">
+          <div class="slideshow-wrapper relative rounded-2xl shadow-2xl card-hover overflow-hidden z-50">
+            <div class="slideshow">
+              <div class="slide active">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
+                  alt="Team collaboration" class="w-full h-full object-cover">
+                <div class="gradient-overlay"></div>
+                <div class="timer-bar"></div>
+              </div>
+              <div class="slide">
+                <img
+                  src="https://image.made-in-china.com/202f0j00unKWAcwBPMbz/High-Quality-Desks-Executive-Office-Furniture-with-Storage-Cabinet-CEO-Directors-Manager-Staff-Desk.webp"
+                  alt="Digital marketing" class="w-full h-full object-cover">
+                <div class="gradient-overlay"></div>
+                <div class="timer-bar"></div>
+              </div>
+              <div class="slide">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&h=400&fit=crop"
+                  alt="Web development" class="w-full h-full object-cover">
+                <div class="gradient-overlay"></div>
+                <div class="timer-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="slide-in-left">
+          <h3 class="text-gray-600 font-semibold mb-4">Why Partner with S&M Group</h3>
+          <h2 class="text-4xl font-bold text-gray-900 mb-8">
+            We provide unparalleled support to our subsidiary companies.
+          </h2>
+        </div>
+        <div class="space-y-8 slide-in-right">
+          <div class="flex items-start space-x-4 card-hover p-6 rounded-xl">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-palette text-purple-600"></i>
+            </div>
+            <div>
+              <h4 class="text-xl font-semibold text-gray-900 mb-2">Expert Marketing Strategies</h4>
+              <p class="text-gray-600">Our team develops tailored marketing plans to maximize brand visibility.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 card-hover p-6 rounded-xl">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-lightbulb text-purple-600"></i>
+            </div>
+            <div>
+              <h4 class="text-xl font-semibold text-gray-900 mb-2">Efficient Distribution Networks</h4>
+              <p class="text-gray-600">We ensure products reach markets quickly and cost-effectively.</p>
+            </div>
+          </div>
+          <div class="flex items-start space-x-4 card-hover p-6 rounded-xl">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-chart-line text-purple-600"></i>
+            </div>
+            <div>
+              <h4 class="text-xl font-semibold text-gray-900 mb-2">Comprehensive Product Management</h4>
+              <p class="text-gray-600">From creation to market, we handle every aspect of product lifecycle.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="brands" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
+        <div class="slide-in-left">
+          <h3 class="text-gray-600 font-semibold mb-4">Our Brands</h3>
+        </div>
+        <div class="slide-in-right">
+          <h2 class="text-4xl font-bold text-gray-900">
+            Turning ideas into reality with design and technology.
+          </h2>
+        </div>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        <% brands.forEach((brand, index)=> { %>
+          <div class="work-card bg-white rounded-2xl overflow-hidden shadow-lg card-hover fade-in"
+            style="animation-delay: 0.2s;">
+            <div class="h-64 bg-gray-200 relative overflow-hidden">
+              <img src="<%= brand.logo || 'https://via.placeholder.com/500x300' %>" alt="<%= brand.name %>"
+                class="w-full h-full object-cover">
+            </div>
+            <div class="p-6">
+              <h4 class="text-xl font-semibold text-gray-900 mb-2">
+                <%= brand.name %>
+              </h4>
+              <p class="text-gray-600 mb-4">
+                <%= brand.description || 'No description available' %>
+              </p>
+              <div class="flex justify-between items-center">
+                <a href="<%= brand.url %>" target="_blank" class="flex items-center text-purple-600 font-semibold">
+                  <span>Visit <%= brand.name %></span>
+                  <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="/assets/<%= encodeURIComponent(brand.name.toLowerCase()) %>-catalogue.pdf" download
+                  class="inline-flex items-center px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition">
+                  <span>Download Catalogue</span>
+                  <i class="fas fa-download ml-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-16 items-center mb-16">
+        <div class="slide-in-left">
+          <h3 class="text-gray-600 font-semibold mb-4">Our Services</h3>
+        </div>
+        <div class="slide-in-right">
+          <h2 class="text-4xl font-bold text-gray-900">
+            Comprehensive solutions to empower our subsidiaries.
+          </h2>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <div class="service-card bg-gray-50 rounded-xl p-8 fade-in">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-bullhorn text-purple-600"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">Marketing Strategy Development</h4>
+                <p class="text-gray-600">Crafting bespoke marketing plans for optimal brand growth.</p>
+              </div>
+            </div>
+            <i class="fas fa-arrow-right text-gray-400"></i>
+          </div>
+        </div>
+        <div class="service-card bg-gray-50 rounded-xl p-8 fade-in" style="animation-delay: 0.2s;">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-paint-brush text-purple-600"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">Product Distribution</h4>
+                <p class="text-gray-600">Leveraging our extensive networks to distribute products efficiently.</p>
+              </div>
+            </div>
+            <i class="fas fa-arrow-right text-gray-400"></i>
+          </div>
+        </div>
+        <div class="service-card bg-gray-50 rounded-xl p-8 fade-in" style="animation-delay: 0.4s;">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-code text-purple-600"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">Brand Management</h4>
+                <p class="text-gray-600">Building and maintaining strong brand identities for our subsidiaries.</p>
+              </div>
+            </div>
+            <i class="fas fa-arrow-right text-gray-400"></i>
+          </div>
+        </div>
+        <div class="service-card bg-gray-50 rounded-xl p-8 fade-in" style="animation-delay: 0.6s;">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6">
+              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-palette text-purple-600"></i>
+              </div>
+              <div>
+                <h4 class="text-xl font-semibold text-gray-900 mb-2">Market Research</h4>
+                <p class="text-gray-600">We craft unique brand identities that capture your vision and resonate with
+                  your audience.</p>
+              </div>
+            </div>
+            <i class="fas fa-arrow-right text-gray-400"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h3 class="text-gray-600 font-semibold mb-4">Contact Us</h3>
+        <h2 class="text-4xl font-bold text-gray-900 mb-8">Get in Touch</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">We're here to help you with your digital needs. Fill out the form
+          below, and we'll get back to you soon.</p>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+          <input type="hidden" name="access_key" value="9b3d27e9-d24c-4292-a7a8-1d55ca30f518" />
+          <div class="grid md:grid-cols-2 gap-6">
+            <input type="text" name="name" placeholder="Your Name"
+              class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+            <input type="email" name="email" placeholder="Your Email"
+              class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+          </div>
+          <input type="text" name="subject" placeholder="Subject"
+            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+          <textarea name="message" placeholder="Your Message" rows="6"
+            class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"></textarea>
+          <button type="submit" class="btn-primary w-full py-4 text-white rounded-full font-semibold">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-black text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h4 class="text-lg font-semibold mb-4">S&M Group</h4>
+          <p class="text-gray-400">Empowering brands through marketing and distribution excellence.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#home" class="text-gray-400 hover:text-white">Home</a></li>
+            <li><a href="#about" class="text-gray-400 hover:text-white">About Us</a></li>
+            <li><a href="#services" class="text-gray-400 hover:text-white">Services</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+          <p class="text-gray-400">123 Digital Street, Web City, 12345</p>
+          <p class="text-gray-400">contact@sandmgroup.com</p>
+          <p class="text-gray-400">+1 234 567 8900</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+        © 2025 S&M Group. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Accordion functionality
+    function toggleAccordion(button) {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector('i');
+      content.classList.toggle('open');
+      icon.classList.toggle('fa-plus');
+      icon.classList.toggle('fa-minus');
+    }
+
+    // Intersection Observer for animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Counter animation
+    function animateCounter(el, target, suffix) {
+      let current = 0;
+      const increment = target / 50;
+      const timer = setInterval(() => {
+        current += increment;
+        el.textContent = Math.round(current) + (current >= target ? suffix : '');
+        if (current >= target) {
+          el.textContent = target + suffix;
+          clearInterval(timer);
+        }
+      }, 20);
+    }
+
+    document.querySelectorAll('.counter').forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target'));
+      const suffix = counter.getAttribute('data-suffix') || '';
+      animateCounter(counter, target, suffix);
+    });
+
+    // Slideshow functionality
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    const slideDuration = 5000;
+
+    function showNextSlide() {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+      setTimeout(showNextSlide, slideDuration);
+    }
+
+    if (slides.length > 0) {
+      slides[0].classList.add('active');
+      setTimeout(showNextSlide, slideDuration);
+    }
+
+    window.addEventListener('scroll', function () {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('bg-black/20');
+      } else {
+        navbar.classList.remove('bg-black/20');
+      }
+    });
+  </script>
+</body>
+
+</html>

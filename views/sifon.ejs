@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sifon - Premium Ceramic Products</title>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .grain-texture {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-pink-500/20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/"
+                    class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Sifon</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-300 hover:text-pink-400 transition-colors duration-300">Home</a>
+                    <a href="/sifon/products"
+                        class="text-gray-300 hover:text-pink-400 transition-colors duration-300">Shop</a>
+                    <a href="/about" class="text-gray-300 hover:text-pink-400 transition-colors duration-300">About</a>
+                    <a href="/contact"
+                        class="text-gray-300 hover:text-pink-400 transition-colors duration-300">Contact</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <button class="p-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                    <button class="p-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </button>
+                    <button class="p-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </button>
+                </div>
+                <button id="mobile-menu-button"
+                    class="md:hidden p-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu"
+                class="hidden md:hidden absolute top-16 left-0 w-full bg-black/95 backdrop-blur-md border-b border-pink-500/20">
+                <ul class="py-4">
+                    <li><a href="/"
+                            class="block px-4 py-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">Home</a>
+                    </li>
+                    <li><a href="/sifon/products"
+                            class="block px-4 py-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">Shop</a>
+                    </li>
+                    <li><a href="/about"
+                            class="block px-4 py-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">About</a>
+                    </li>
+                    <li><a href="/contact"
+                            class="block px-4 py-2 text-gray-300 hover:text-pink-400 transition-colors duration-300">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16" id="hero">
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black">
+            <div class="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-transparent to-purple-500/10"></div>
+            <!-- <div class="absolute inset-0">
+                <% for(let i = 0; i < 20; i++) { %>
+                    <div class="absolute w-1 h-1 bg-pink-400/30 rounded-full animate-pulse-slow" style="left: <%= Math.random() * 100 %>%; top: <%= Math.random() * 100 %>%; animation-delay: <%= Math.random() * 3 %>s; animation-duration: <%= 2 + Math.random() * 2 %>s;"></div>
+                <% } %>
+            </div> -->
+        </div>
+        <div class="relative z-10 container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div
+                    class="inline-flex items-center px-4 py-2 mb-8 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-full backdrop-blur-sm">
+                    <span class="text-pink-400 text-sm font-medium tracking-wider">NOW LIVE • PREMIUM COLLECTION
+                        2025</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    <span
+                        class="block bg-gradient-to-r from-pink-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-pulse">Premium
+                        Ceramics.</span>
+                    <span class="block text-white mt-2">Innovate Your</span>
+                    <span
+                        class="block bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Bathroom.</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Sifon brings you premium ceramic products that redefine bathroom aesthetics and functionality.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                    <a href="/sifon/products"
+                        class="group relative px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/25 hover:scale-105">
+                        <span class="relative z-10 flex items-center">
+                            Discover Our Products
+                            <svg class="ml-2 group-hover:translate-x-1 transition-transform duration-300" width="20"
+                                height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="M12 5l7 7-7 7" />
+                            </svg>
+                        </span>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                    </a>
+                    <button
+                        class="group flex items-center px-8 py-4 text-gray-300 font-semibold rounded-full border border-gray-600 hover:border-pink-500/50 transition-all duration-300 hover:text-pink-400">
+                        <svg class="mr-2 group-hover:scale-110 transition-transform duration-300" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                        Watch Craftsmanship
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-2xl md:text-3xl font-bold text-pink-400 mb-1">50+</div>
+                        <div class="text-gray-400 text-sm">Unique Designs</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl md:text-3xl font-bold text-purple-400 mb-1">15+</div>
+                        <div class="text-gray-400 text-sm">Color Variations</div>
+                    </div>
+                    <div class="text-center col-span-2 md:col-span-1">
+                        <div class="text-2xl md:text-3xl font-bold text-pink-400 mb-1">∞</div>
+                        <div class="text-gray-400 text-sm">Creative Possibilities</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <div class="w-6 h-10 border-2 border-pink-400/50 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-pink-400 rounded-full mt-2 animate-pulse"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">About
+                            Sifon</span>
+                    </h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto mb-8"></div>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        Sifon is dedicated to crafting premium ceramic products that blend innovation with timeless
+                        design, transforming bathrooms into artistic sanctuaries.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-white mb-4">Our Mission</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            At Sifon, we believe bathrooms should inspire. Our journey began with a passion for
+                            redefining ceramic artistry, combining modern functionality with bold aesthetics.
+                        </p>
+                        <div
+                            class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/20 rounded-full">
+                            <span class="text-pink-400 font-medium">Since 2023 • Premium Craftsmanship</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div
+                            class="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-pink-500/20 to-purple-500/20 p-1">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80"
+                                alt="Ceramic craftsmanship" class="w-full h-full object-cover rounded-xl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Grid -->
+    <section class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        <span class="text-white">Explore </span>
+                        <span
+                            class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Collections</span>
+                    </h2>
+                    <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                        Discover our curated collections of premium ceramic artistry
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <% categories.forEach((category, index)=> { %>
+                        <a href="/sifon/category/<%= category._id %>"
+                            class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 hover:border-pink-500/30 transition-all duration-500 hover:scale-105">
+                            <div class="aspect-[4/3] overflow-hidden relative">
+                                <img src="<%= category.image || 'https://via.placeholder.com/600x400' %>"
+                                    alt="<%= category.name %>"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                                </div>
+                                <div
+                                    class="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-pink-500/80 to-purple-500/80 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                    <span class="text-white font-bold">
+                                        <%= (index + 1).toString().padStart(2, '0' ) %>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3
+                                    class="text-xl font-bold text-white mb-2 group-hover:text-pink-400 transition-colors duration-300">
+                                    <%= category.name %>
+                                </h3>
+                                <p class="text-gray-400 text-sm mb-4 leading-relaxed">Explore our premium <%=
+                                        category.name.toLowerCase() %> collection.</p>
+                                <div
+                                    class="flex items-center text-pink-400 font-medium group-hover:text-purple-400 transition-colors duration-300">
+                                    <span class="mr-2">Explore Collection</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="grain-texture"></div>
+                        </a>
+                        <% }) %>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-20 bg-gradient-to-b from-gray-900 to-black">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <div
+                        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-full mb-6">
+                        <svg class="w-4 h-4 text-pink-400 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2l2.39 7.23h7.61l-6.16 4.47 2.39 7.23-6.16-4.47-6.16 4.47 2.39-7.23-6.16-4.47h7.61z" />
+                        </svg>
+                        <span class="text-pink-400 text-sm font-medium">FEATURED COLLECTION</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        <span class="text-white">Signature </span>
+                        <span
+                            class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Products</span>
+                    </h2>
+                    <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+                        Handpicked pieces that define the Sifon aesthetic
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <a href="/sifon/product/dreamcurve-78"
+                        class="group relative bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-pink-500/30 transition-all duration-500 hover:scale-105">
+                        <div class="aspect-square overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80"
+                                alt="DreamCurve 78"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
+                            <div
+                                class="absolute top-4 left-4 px-3 py-1 bg-black/80 backdrop-blur-sm text-pink-400 font-semibold rounded-full text-sm">
+                                $895</div>
+                            <div
+                                class="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-pink-500/80 to-purple-500/80 backdrop-blur-sm text-white font-medium rounded-full text-xs">
+                                FEATURED</div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs text-pink-400 font-medium uppercase tracking-wider">Toilets</span>
+                                <div class="flex items-center">
+                                    <% for(let i=0; i < 5; i++) { %>
+                                        <svg class="w-4 h-4 text-pink-400 fill-current" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2l2.39 7.23h7.61l-6.16 4.47 2.39 7.23-6.16-4.47-6.16 4.47 2.39-7.23-6.16-4.47h7.61z" />
+                                        </svg>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <h3
+                                class="text-xl font-bold text-white mb-3 group-hover:text-pink-400 transition-colors duration-300">
+                                DreamCurve 78</h3>
+                            <p class="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-2">
+                                A sculptural toilet that captures the essence of premium elegance with its flowing
+                                curves.
+                            </p>
+                            <div
+                                class="flex items-center text-pink-400 font-medium group-hover:text-purple-400 transition-colors duration-300">
+                                <span class="mr-2">Explore Details</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="grain-texture"></div>
+                    </a>
+                    <!-- Add more featured products as needed -->
+                </div>
+                <div class="text-center">
+                    <a href="/sifon/products"
+                        class="group px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-pink-500/25 hover:scale-105 transition-all duration-300">
+                        <span class="flex items-center">
+                            Explore All Products
+                            <svg class="ml-2 group-hover:translate-x-1 transition-transform duration-300" width="20"
+                                height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14" />
+                                <path d="M12 5l7 7-7 7" />
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Craftsmanship Section -->
+    <section class="py-20 bg-black relative overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        <span class="text-white">Design & </span>
+                        <span
+                            class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Craftsmanship</span>
+                    </h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto mb-8"></div>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                        Where premium ceramic artistry meets innovative design. Each piece reflects our dedication to
+                        quality and style.
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 mb-20">
+                    <div
+                        class="group relative bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-pink-500/30 transition-all duration-500">
+                        <div class="aspect-[16/10] overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80"
+                                alt="Design Conception"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
+                            </div>
+                            <div
+                                class="absolute top-4 left-4 w-12 h-12 bg-gradient-to-br from-pink-500/80 to-purple-500/80 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                <span class="text-white font-bold">01</span>
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h3
+                                class="text-xl font-bold text-white group-hover:text-pink-400 transition-colors duration-300">
+                                Design Conception</h3>
+                            <p class="text-gray-400 leading-relaxed">Every piece starts with a vision, crafted to
+                                inspire.</p>
+                        </div>
+                        <div class="grain-texture"></div>
+                    </div>
+                    <!-- Add more process steps as needed -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        <span class="text-white">Loved by </span>
+                        <span
+                            class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Customers</span>
+                    </h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto mb-8"></div>
+                    <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                        Hear how Sifon transforms spaces for our clients
+                    </p>
+                </div>
+                <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                    <div
+                        class="group relative bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl p-8 hover:border-pink-500/30 transition-all duration-500 hover:scale-105">
+                        <div
+                            class="absolute top-6 right-6 text-pink-400/30 group-hover:text-pink-400/50 transition-colors duration-300">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M10 5v4H4l6-9h10v4H14l-4 9zm4 10v-4h6l-6 9H4v-4h6l4-9z" />
+                            </svg>
+                        </div>
+                        <div class="flex items-center mb-6">
+                            <% for(let i=0; i < 5; i++) { %>
+                                <svg class="w-4 h-4 text-pink-400 fill-current mr-1" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2l2.39 7.23h7.61l-6.16 4.47 2.39 7.23-6.16-4.47-6.16 4.47 2.39-7.23-6.16-4.47h7.61z" />
+                                </svg>
+                                <% } %>
+                        </div>
+                        <blockquote class="text-gray-300 leading-relaxed mb-6 italic">"Sifon’s products are exceptional,
+                            transforming my bathroom into a masterpiece."</blockquote>
+                        <div class="flex items-center">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80"
+                                alt="John Doe"
+                                class="w-12 h-12 rounded-full object-cover mr-4 border-2 border-pink-500/30">
+                            <div>
+                                <div class="text-white font-semibold">John Doe</div>
+                                <div class="text-pink-400 text-sm">Verified Buyer</div>
+                            </div>
+                        </div>
+                        <div class="grain-texture"></div>
+                    </div>
+                    <!-- Add more testimonials as needed -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-black border-t border-gray-800 py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-4 gap-12">
+                <div class="lg:col-span-2">
+                    <a href="/"
+                        class="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-6 inline-block">Sifon</a>
+                    <p class="text-gray-400 leading-relaxed mb-8 max-w-md">
+                        Premium ceramics that redefine your bathroom with artistic flair and modern functionality.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="p-3 bg-gray-900/50 border border-gray-700 rounded-lg text-gray-400 hover:text-pink-400 hover:border-pink-500/50 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.04c-5.5 0-9.96 4.46-9.96 9.96 0 4.41 2.87 8.14 6.84 9.46v-6.68H6.12v-2.78h2.76V9.72c0-2.73 1.62-4.23 4.11-4.23 1.19 0 2.43.24 2.43.24v2.67h-1.37c-1.35 0-1.77.84-1.77 1.7v2.04h3.01l-.48 2.78h-2.53v6.68c3.97-1.32 6.84-5.05 6.84-9.46 0-5.5-4.46-9.96-9.96-9.96z" />
+                            </svg>
+                        </a>
+                        <!-- Add more social links -->
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/"
+                                class="text-gray-400 hover:text-pink-400 transition-colors duration-300">Home</a></li>
+                        <li><a href="/sifon/products"
+                                class="text-gray-400 hover:text-pink-400 transition-colors duration-300">Shop</a></li>
+                        <li><a href="/about"
+                                class="text-gray-400 hover:text-pink-400 transition-colors duration-300">About</a></li>
+                        <li><a href="/contact"
+                                class="text-gray-400 hover:text-pink-400 transition-colors duration-300">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-6">Contact</h4>
+                    <div class="space-y-3 text-gray-400 text-sm">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span>Abudhabi, UAE</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            <span>+91 9019 23 2309</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-pink-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            <span>info@sifon.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="py-8 border-t border-gray-800 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+                    <p>© 2025 Sifon. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="hover:text-pink-400 transition-colors duration-300">Privacy Policy</a>
+                        <a href="#" class="hover:text-pink-400 transition-colors duration-300">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="grain-texture"></div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

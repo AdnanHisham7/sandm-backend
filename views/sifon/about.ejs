@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Sifon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-pink-500/20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Sifon</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-300 hover:text-pink-400">Home</a>
+                    <a href="/sifon/products" class="text-gray-300 hover:text-pink-400">Shop</a>
+                    <a href="/about" class="text-pink-400">About</a>
+                    <a href="/contact" class="text-gray-300 hover:text-pink-400">Contact</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden p-2 text-gray-300 hover:text-pink-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-black/95 backdrop-blur-md border-b border-pink-500/20">
+                <ul class="py-4">
+                    <li><a href="/" class="block px-4 py-2 text-gray-300 hover:text-pink-400">Home</a></li>
+                    <li><a href="/sifon/products" class="block px-4 py-2 text-gray-300 hover:text-pink-400">Shop</a></li>
+                    <li><a href="/about" class="block px-4 py-2 text-pink-400">About</a></li>
+                    <li><a href="/contact" class="block px-4 py-2 text-gray-300 hover:text-pink-400">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section class="pt-24 pb-16 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-center">
+                <span class="text-white">About </span>
+                <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Sifon</span>
+            </h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed text-center">
+                Sifon is dedicated to crafting premium ceramic products that blend innovation with timeless design.
+            </p>
+            <div class="grid md:grid-cols-2 gap-12 items-center mt-16">
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-white">Our Mission</h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        We aim to redefine bathroom aesthetics with our artistic and functional ceramic products.
+                    </p>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80" alt="Craftsmanship" class="w-full h-full object-cover rounded-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Craftsmanship Section -->
+    <section class="py-20 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center">
+                <span class="text-white">Craftsmanship & </span>
+                <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Innovation</span>
+            </h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="group relative bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-white mb-4">Design Process</h3>
+                    <p class="text-gray-400">Our design process combines traditional techniques with modern innovation.</p>
+                </div>
+                <div class="group relative bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl p-8">
+                    <h3 class="text-xl font-bold text-white mb-4">Quality Materials</h3>
+                    <p class="text-gray-400">We source the finest materials to ensure durability and elegance.</p>
+                </div>
+            </div>
+            <!-- Testimonial -->
+            <div class="mt-16 text-center">
+                <blockquote class="text-xl text-gray-300 italic max-w-2xl mx-auto">
+                    "Sifon’s ceramics bring a unique blend of art and utility to every space."
+                    <cite class="block mt-4 text-pink-400 font-semibold">– Design Expert</cite>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative bg-black border-t border-gray-800 py-16">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2023 Sifon. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

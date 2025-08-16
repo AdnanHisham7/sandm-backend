@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livora - Premium Ceramic Products</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'livera-green': '#2ECC71',
+                        'livera-dark-green': '#27AE60',
+                        'livera-forest': '#1E3A2E',
+                        'livera-light-green': '#E8F8F5'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .pulse-green {
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+        }
+
+        .text-livera-green {
+            color: #2ECC71;
+        }
+
+        .bg-livera-green {
+            background-color: #2ECC71;
+        }
+
+        .text-livera-dark-green {
+            color: #27AE60;
+        }
+
+        .bg-livera-dark-green {
+            background-color: #27AE60;
+        }
+
+        .text-livera-forest {
+            color: #1E3A2E;
+        }
+
+        .bg-livera-forest {
+            background-color: #1E3A2E;
+        }
+
+        .text-livera-light-green {
+            color: #E8F8F5;
+        }
+
+        .bg-livera-light-green {
+            background-color: #E8F8F5;
+        }
+
+        .font-sans {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+        }
+
+        .counter {
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .room-card {
+            transition: all 0.4s ease;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .room-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <img src="/assets/livora-logo.png" alt="Livora Logo" class="h-8">
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <div class="relative group">
+                            <button id="explore-button"
+                                class="text-gray-700 font-medium hover:text-livera-green transition-colors duration-300 text-base"
+                                aria-haspopup="true" aria-expanded="false">Explore</button>
+
+                            <!-- Dropdown Panel -->
+                            <div id="explore-dropdown"
+                                class="absolute left-0 mt-3 w-full sm:w-[28rem] bg-white rounded-2xl shadow-xl border border-gray-100 hidden group-hover:block z-50 transition-all duration-300 ease-in-out"
+                                role="menu" aria-labelledby="explore-button">
+                                <div class="grid grid-cols-2 gap-6 p-6">
+                                    <% productsByCategory.forEach(item=> { %>
+                                        <div>
+                                            <!-- Category Title -->
+                                            <h3 class="text-lg font-semibold text-gray-900 border-b pb-1 mb-3">
+                                                <%= item.category.name %>
+                                            </h3>
+
+                                            <!-- Product Links -->
+                                            <ul class="space-y-2">
+                                                <% item.products.forEach(product=> { %>
+                                                    <li>
+                                                        <a href="/livora/product/<%= product._id %>"
+                                                            class="block text-sm text-gray-600 hover:text-livera-green transition duration-200">
+                                                            <%= product.name %>
+                                                        </a>
+                                                    </li>
+                                                    <% }) %>
+                                            </ul>
+
+                                            <!-- View All CTA -->
+                                            <a href="/livora/category/<%= item.category._id %>"
+                                                class="mt-4 inline-block text-xs font-medium text-livera-green hover:underline transition duration-200">
+                                                View all
+                                            </a>
+                                        </div>
+                                        <% }) %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="/livora/products"
+                            class="text-gray-700 hover:text-livera-green transition-colors duration-300">Products</a>
+
+                        <button
+                            class="text-gray-700 hover:text-livera-green transition-colors duration-300">Contact
+                            Us</button>
+
+                        <a href="/assets/brochure.pdf" download
+                            class="bg-livera-forest text-white px-6 py-2 rounded-full hover:bg-opacity-90 transition-all duration-300">Download
+                            Brochure</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-livera-green">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-white shadow-lg">
+                <ul class="py-4">
+                    <% categories.forEach(category=> { %>
+                        <li><a href="/livora/category/<%= category._id %>"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <%= category.name %>
+                            </a></li>
+                        <% }) %>
+                            <li><a href="/livora/products" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All
+                                    Products</a></li>
+                            <li><a href="#contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Contact
+                                    Us</a></li>
+                            <li><a href="/assets/brochure.pdf" download
+                                    class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Download Catalogue</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-white font-sans py-36">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 lg:pr-12 mb-12 lg:mb-0 fade-in">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-livera-light-green rounded-full px-4 py-2 flex items-center">
+                            <div class="w-3 h-3 bg-livera-green rounded-full mr-2"></div>
+                            <span class="text-sm text-gray-700">Trusted By Thousands of Customers</span>
+                        </div>
+                    </div>
+                    <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                        Your Experts In<br>Modern and<br>Timeless <span class="text-livera-green italic">Ceramics</span>
+                    </h1>
+                    <p class="text-gray-600 text-lg mb-8 leading-relaxed max-w-md">
+                        At Livora, we specialize in providing high-quality ceramic products that combine modern design
+                        with timeless elegance. Our extensive range includes toilets, washbasins, urinals, and more,
+                        available in various styles and colors to suit any bathroom decor.
+                    </p>
+                    <button
+                        class="bg-livera-green text-white px-8 py-4 rounded-full font-semibold hover:bg-livera-dark-green transition-all duration-300 hover-scale">
+                        Call Now for Enquiry
+                    </button>
+                </div>
+                <div class="lg:w-1/2 fade-in">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <div class="bg-white rounded-2xl p-2 shadow-lg hover-scale floating">
+                                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                                    alt="Modern Bathroom" class="w-full h-64 object-cover rounded-xl">
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-2 shadow-lg hover-scale">
+                            <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Bathroom Interior" class="w-full h-40 object-cover rounded-lg">
+                        </div>
+                        <div class="bg-white rounded-2xl p-2 shadow-lg hover-scale">
+                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                                alt="Modern Toilet" class="w-full h-40 object-cover rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-livera-forest py-20 rounded-3xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-center">
+                <!-- Stat Item -->
+                <div class="fade-in hover-scale">
+                    <div class="text-5xl font-bold text-white flex justify-center items-center">
+                        <span class="counter" data-target="10000">0</span><span
+                            class="text-livera-green text-xl font-semibold ml-1">K+</span>
+                    </div>
+                    <div class="text-gray-300 mt-2 text-sm">Satisfied Customers</div>
+                </div>
+                <!-- Stat Item -->
+                <div class="fade-in hover-scale">
+                    <div class="text-5xl font-bold text-white flex justify-center items-center">
+                        <span class="counter" data-target="4.9">0</span><span
+                            class="text-livera-green text-xl font-semibold ml-1">★</span>
+                    </div>
+                    <div class="text-gray-300 mt-2 text-sm">Average Rating</div>
+                </div>
+                <!-- Stat Item -->
+                <div class="fade-in hover-scale">
+                    <div class="text-5xl font-bold text-white flex justify-center items-center">
+                        <span class="counter" data-target="18">0</span><span
+                            class="text-livera-green text-xl font-semibold ml-1">Yrs</span>
+                    </div>
+                    <div class="text-gray-300 mt-2 text-sm">Years in Business</div>
+                </div>
+                <!-- Stat Item -->
+                <div class="fade-in hover-scale">
+                    <div class="text-5xl font-bold text-white flex justify-center items-center">
+                        <span class="counter" data-target="20">0</span><span
+                            class="text-livera-green text-xl font-semibold ml-1">+</span>
+                    </div>
+                    <div class="text-gray-300 mt-2 text-sm">Product Variants</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12 fade-in">
+                    <div class="bg-gray-200 rounded-3xl h-96 flex items-center justify-center hover-scale">
+                        <div class="text-gray-400 text-xl">Image Placeholder</div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 fade-in">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-8">Why Choose Livora for Your Ceramic Needs</h2>
+                    <p class="text-gray-600 mb-8">
+                        At Livora, we are committed to delivering premium ceramic products that enhance your bathroom
+                        with both functionality and style. Our dedication to quality ensures lasting performance and
+                        customer satisfaction.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-livera-green rounded-full p-2 mr-4 mt-1">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-700">High-quality ceramics for durability and elegance.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-livera-green rounded-full p-2 mr-4 mt-1">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-700">Diverse designs and colors to suit every taste.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-livera-green rounded-full p-2 mr-4 mt-1">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-700">Expert support for personalized product selection.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-livera-green rounded-full p-2 mr-4 mt-1">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-700">Reliable delivery and installation services.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="mt-8 bg-livera-green text-white px-8 py-4 rounded-full font-semibold hover:bg-livera-dark-green transition-all duration-300 hover-scale">
+                        Call Now For Enquiry
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">Categories</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                <% const categoryImages={ 'Toilets'
+                    : 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80'
+                    , 'Basins'
+                    : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'
+                    , 'Urinals'
+                    : 'https://images.unsplash.com/photo-1598135753163-6167c1a1ad89?auto=format&fit=crop&w=600&q=80'
+                    , 'Accessories'
+                    : 'https://images.unsplash.com/photo-1618220048045-10a7dbdf83e0?auto=format&fit=crop&w=600&q=80' };
+                    %>
+                    <% categories.forEach(category=> { %>
+                        <a href="/livora/category/<%= category._id %>" class="relative group fade-in">
+                            <img src="<%= category.image || 'https://via.placeholder.com/600x400' %>"
+                                alt="<%= category.name %>" class="w-full h-64 object-cover rounded-lg">
+                            <div class="absolute inset-0 bg-black/20 transition-opacity duration-300">
+                            </div>
+                            <div class="absolute bottom-4 left-4 text-white text-xl font-semibold">
+                                <%= category.name %>
+                            </div>
+                        </a>
+                        <% }) %>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-gray-900 mb-16">Testimonials</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white rounded-2xl p-8 shadow-lg fade-in">
+                    <p class="text-gray-700 mb-6 italic">"Livora's washbasins are stunning and functional—my bathroom
+                        feels luxurious now!"</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
+                            alt="John Doe" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <div class="font-semibold text-gray-900">John Doe</div>
+                            <div class="text-sm text-gray-500">Verified Buyer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card bg-white rounded-2xl p-8 shadow-lg fade-in">
+                    <p class="text-gray-700 mb-6 italic">"The quality of Livora's toilets is exceptional, and their
+                        customer service is outstanding."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b2130e5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
+                            alt="Jane Smith" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <div class="font-semibold text-gray-900">Jane Smith</div>
+                            <div class="text-sm text-gray-500">Verified Buyer</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card bg-white rounded-2xl p-8 shadow-lg fade-in">
+                    <p class="text-gray-700 mb-6 italic">"Livora's urinals are sleek and easy to maintain—perfect for
+                        our office space."</p>
+                    <div class="flex items-center">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
+                            alt="Mike Johnson" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <div class="font-semibold text-gray-900">Mike Johnson</div>
+                            <div class="text-sm text-gray-500">Verified Buyer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Categories Section -->
+    <section class="py-20 bg-[#f9f7f3]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-black mb-4">Explore Our Premium Ceramic Products</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+                <div class="bg-gray-300 rounded-2xl p-6 flex flex-col justify-between fade-in">
+                    <div class="aspect-[16/9] w-full bg-white rounded-xl mb-4 overflow-hidden">
+                        <img src="https://example.com/toilet.jpg" alt="Toilets" class="w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Toilets</h3>
+                    <p class="text-sm text-gray-700 mb-4">Discover our range of modern and efficient toilets designed
+                        for comfort and style.</p>
+                    <div class="w-10 h-10 rounded-full bg-[#66f2b8] flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="bg-[#0b2e25] rounded-2xl p-6 flex flex-col justify-between text-white fade-in">
+                    <h3 class="text-lg font-semibold mb-2">Washbasins</h3>
+                    <p class="text-sm mb-4">Choose from a variety of washbasins that blend functionality with elegant
+                        design.</p>
+                    <div class="aspect-[16/9] w-full bg-white rounded-xl mb-4 overflow-hidden">
+                        <img src="https://example.com/washbasin.jpg" alt="Washbasins"
+                            class="w-full h-full object-cover" />
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-[#66f2b8] flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="bg-[#5c240e] rounded-2xl p-6 flex flex-col justify-between text-white fade-in">
+                    <h3 class="text-lg font-semibold mb-2">Urinals</h3>
+                    <p class="text-sm mb-4">Our urinals offer hygiene and ease of use for commercial and residential
+                        settings.</p>
+                    <div class="aspect-[16/9] w-full bg-white rounded-xl mb-4 overflow-hidden">
+                        <img src="https://example.com/urinal.jpg" alt="Urinals" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-[#66f2b8] flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="bg-gray-300 rounded-2xl p-6 flex flex-col justify-between fade-in">
+                    <div class="aspect-[16/9] w-full bg-white rounded-xl mb-4 overflow-hidden">
+                        <img src="https://example.com/accessories.jpg" alt="Accessories"
+                            class="w-full h-full object-cover" />
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Accessories</h3>
+                    <p class="text-sm text-gray-700 mb-4">Complete your bathroom with our ceramic accessories like soap
+                        dishes and towel racks.</p>
+                    <div class="w-10 h-10 rounded-full bg-[#66f2b8] flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="pt-16 px-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="fade-in grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <!-- Left: Heading -->
+            <div>
+                <h2 class="text-4xl font-bold text-gray-900 mb-2">Frequently Asked</h2>
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Questions</h2>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    We're here to help you choose the perfect ceramic products with confidence.
+                </p>
+            </div>
+
+            <!-- Right: FAQ Accordion -->
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="border border-gray-200 rounded-lg bg-white">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center"
+                        data-target="faq1">
+                        <span class="font-medium text-gray-900">What materials are used in your ceramic products?</span>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-200 faq-arrow"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="faq1"
+                        class="faq-content max-h-0 hidden overflow-hidden transition-all duration-300 ease-out px-6 pb-4">
+                        <p class="text-gray-600 text-sm">
+                            Our products are crafted from high-quality porcelain and vitreous china for durability and a
+                            glossy finish.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="border border-gray-200 rounded-lg bg-white">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center"
+                        data-target="faq2">
+                        <span class="font-medium text-gray-900">Do you offer installation services?</span>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-200 faq-arrow"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="faq2"
+                        class="faq-content max-h-0 hidden overflow-hidden transition-all duration-300 ease-out px-6 pb-4">
+                        <p class="text-gray-600 text-sm">
+                            Yes, we provide professional installation services. Contact us for details and pricing.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="border border-gray-200 rounded-lg bg-white">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center"
+                        data-target="faq3">
+                        <span class="font-medium text-gray-900">How can I track my order?</span>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-200 faq-arrow"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="faq3"
+                        class="faq-content max-h-0 hidden overflow-hidden transition-all duration-300 ease-out px-6 pb-4">
+                        <p class="text-gray-600 text-sm">
+                            You'll receive a tracking number via email once your order ships, or check your account
+                            dashboard.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="border border-gray-200 rounded-lg bg-white">
+                    <button class="faq-toggle w-full px-6 py-5 text-left flex justify-between items-center"
+                        data-target="faq4">
+                        <span class="font-medium text-gray-900">What is your return policy?</span>
+                        <svg class="w-5 h-5 text-gray-500 transform transition-transform duration-200 faq-arrow"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="faq4"
+                        class="faq-content max-h-0 hidden overflow-hidden transition-all duration-300 ease-out px-6 pb-4">
+                        <p class="text-gray-600 text-sm">
+                            We offer a 30-day return policy for unused, undamaged products. See our returns page for
+                            details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-24 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="fade-in">
+            <div class="relative rounded-2xl overflow-hidden shadow-2xl hover-scale">
+                <div class="relative h-96 bg-gradient-to-r from-emerald-800 to-teal-700">
+                    <div class="absolute inset-0 opacity-20">
+                        <div class="grid grid-cols-12 gap-1 h-full">
+                            <div class="bg-white opacity-10"></div>
+                            <div class="bg-white opacity-5"></div>
+                            <div class="bg-white opacity-10"></div>
+                            <div class="bg-white opacity-5"></div>
+                            <div class="bg-white opacity-10"></div>
+                            <div class="bg-white opacity-5"></div>
+                            <div class="bg-white opacity-10"></div>
+                            <div class="bg-white opacity-5"></div>
+                            <div class="bg-white opacity-10"></div>
+                            <div class="bg-white opacity-5"></div>
+                            <div class="bg-white opacity-10"></div>
+                            <div class="bg-white opacity-5"></div>
+                        </div>
+                    </div>
+                    <div class="absolute top-8 left-8 floating">
+                        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-lg"></div>
+                    </div>
+                    <div class="absolute bottom-12 right-12 floating" style="animation-delay: 1s;">
+                        <div class="w-6 h-6 bg-white bg-opacity-20 rounded-full"></div>
+                    </div>
+                    <div class="absolute top-1/2 right-8 floating" style="animation-delay: 2s;">
+                        <div class="w-4 h-4 bg-white bg-opacity-20 rounded"></div>
+                    </div>
+                    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-8">
+                        <div class="mb-8">
+                            <button
+                                class="bg-emerald-500 hover:bg-emerald-400 text-white px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 pulse-green">
+                                Get Started Today
+                            </button>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mb-4 leading-tight">
+                            Elevate Your Bathroom<br>With Livora
+                        </h3>
+                        <p class="text-white text-opacity-90 mb-8 max-w-sm leading-relaxed">
+                            Contact us to discover our premium ceramic toilets, washbasins, and urinals tailored to your
+                            needs.
+                        </p>
+                        <button
+                            class="bg-emerald-400 hover:bg-emerald-300 text-emerald-900 px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            Talk With Us
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Logo and Contact -->
+                <div class="fade-in">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 bg-emerald-400 rounded-lg mr-3 flex items-center justify-center">
+                            <div class="w-4 h-4 bg-emerald-800 rounded"></div>
+                        </div>
+                        <span class="text-2xl font-bold">livera</span>
+                    </div>
+                    <div class="space-y-2 text-emerald-100">
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            info@ecotraacademy.com
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            +91 9019 23 2309
+                        </p>
+                        <p class="flex items-center">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Abudhabi, UAE
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Home Links -->
+                <div class="fade-in">
+                    <h4 class="font-semibold mb-4 text-emerald-100">Home</h4>
+                    <ul class="space-y-2 text-emerald-200">
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Our Mission</a>
+                        </li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Our Courses</a>
+                        </li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Our
+                                Testimonials</a></li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Our FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- About Us Links -->
+                <div class="fade-in">
+                    <h4 class="font-semibold mb-4 text-emerald-100">About Us</h4>
+                    <ul class="space-y-2 text-emerald-200">
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Company</a></li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Achievements</a>
+                        </li>
+                        <li><a href="#" class="hover:text-emerald-300 transition-colors duration-200">Our Goals</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Profiles -->
+                <div class="fade-in">
+                    <h4 class="font-semibold mb-4 text-emerald-100">Social Profiles</h4>
+                    <div class="flex space-x-3">
+                        <a href="#"
+                            class="w-8 h-8 bg-emerald-600 hover:bg-emerald-500 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-8 h-8 bg-emerald-600 hover:bg-emerald-500 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-8 h-8 bg-emerald-600 hover:bg-emerald-500 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="w-8 h-8 bg-emerald-600 hover:bg-emerald-500 rounded-lg flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.219-.359-1.219c0-1.142.662-1.995 1.488-1.995.219 0 .423.219.423.606 0 .423-.105.937-.219 1.488-.219.937.662 1.406 1.406 1.406 1.687 0 2.987-1.78 2.987-4.359 0-2.278-1.638-3.874-3.982-3.874-2.714 0-4.31 2.035-4.31 4.137 0 .819.315 1.699.709 2.179.077.093.088.175.065.27-.071.297-.23.935-.262 1.068-.041.175-.135.212-.31.128-1.188-.553-1.929-2.29-1.929-3.681 0-3.007 2.186-5.771 6.299-5.771 3.306 0 5.877 2.357 5.877 5.508 0 3.291-2.074 5.934-4.949 5.934-.966 0-1.876-.503-2.187-1.106 0 0-.479 1.822-.595 2.27-.215.827-.799 1.864-1.188 2.498.894.275 1.84.422 2.821.422 6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div
+                class="border-t border-emerald-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-emerald-200 text-sm">
+                <p>© 2024 Ecotra Academy. All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-emerald-300 transition-colors duration-200">Privacy Policy</a>
+                    <a href="#" class="hover:text-emerald-300 transition-colors duration-200">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dropdown Toggle Functionality
+        const exploreButton = document.getElementById('explore-button');
+        const exploreDropdown = document.getElementById('explore-dropdown');
+
+        exploreButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isExpanded = exploreButton.getAttribute('aria-expanded') === 'true';
+            exploreButton.setAttribute('aria-expanded', !isExpanded);
+            exploreDropdown.classList.toggle('hidden', isExpanded);
+            exploreDropdown.classList.toggle('block', !isExpanded);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!exploreButton.contains(e.target) && !exploreDropdown.contains(e.target)) {
+                exploreButton.setAttribute('aria-expanded', 'false');
+                exploreDropdown.classList.add('hidden');
+                exploreDropdown.classList.remove('block');
+            }
+        });
+
+        exploreButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const isExpanded = exploreButton.getAttribute('aria-expanded') === 'true';
+                exploreButton.setAttribute('aria-expanded', !isExpanded);
+                exploreDropdown.classList.toggle('hidden', isExpanded);
+                exploreDropdown.classList.toggle('block', !isExpanded);
+            }
+        });
+
+        // Mobile Menu Toggle Functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // FAQ Toggle Functionality
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const target = document.getElementById(button.getAttribute('data-target'));
+                const arrow = button.querySelector('.faq-arrow');
+                const isOpen = !target.classList.contains('hidden');
+
+                document.querySelectorAll('.faq-content').forEach(content => {
+                    content.classList.add('hidden');
+                    content.style.maxHeight = null;
+                });
+                document.querySelectorAll('.faq-arrow').forEach(arr => {
+                    arr.style.transform = 'rotate(0deg)';
+                });
+
+                if (!isOpen) {
+                    target.classList.remove('hidden');
+                    target.style.maxHeight = target.scrollHeight + 'px';
+                    arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Counter Animation for Stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                let count = 0;
+                const increment = target / 100;
+                const updateCounter = () => {
+                    count += increment;
+                    if (count >= target) {
+                        counter.textContent = target % 1 === 0 ? target.toLocaleString() : target.toFixed(1);
+                    } else {
+                        counter.textContent = Math.ceil(count).toLocaleString();
+                        requestAnimationFrame(updateCounter);
+                    }
+                };
+                const observer = new IntersectionObserver(entries => {
+                    if (entries[0].isIntersecting) {
+                        updateCounter();
+                        observer.unobserve(counter);
+                    }
+                }, { threshold: 0.5 });
+                observer.observe(counter);
+            });
+        }
+        window.addEventListener('load', animateCounters);
+    </script>
+</body>
+
+</html>

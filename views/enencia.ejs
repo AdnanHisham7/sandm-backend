@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enencia Hero Carousel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script defer>
+    // Simple mobile menu toggle
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('open');
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Playfair Display', serif;
+    }
+
+    @font-face {
+      font-family: 'Kanilia';
+      src: url('/Kanilia.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .font-kanilia {
+      font-family: 'Kanilia', serif;
+    }
+
+    @font-face {
+      font-family: 'LemonMilkUltraLight';
+      src: url('/lemon-milk-ultralight.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    .font-lemonmilk {
+      font-family: 'LemonMilkUltraLight', sans-serif;
+    }
+
+    .carousel-text {
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .carousel-image {
+      transition: opacity 0.5s ease;
+    }
+
+    #mobile-menu.open {
+      max-height: 500px;
+      padding: 0px 20px 20px 20px;
+    }
+
+    .inter-font {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .product-card {
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      overflow: hidden;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
+      transition: opacity 0.3s ease;
+    }
+
+    .product-card:hover::before {
+      opacity: 0.7;
+    }
+
+    .premium-badge {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .form-input {
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px -5px rgba(37, 99, 235, 0.4);
+    }
+  </style>
+</head>
+
+<body class="bg-[#044d7a] text-white">
+  <!-- Navbar -->
+  <header class="bg-white shadow-md px-4 sm:px-10 py-4 relative">
+    <div class="hidden sm:flex items-center justify-between relative">
+      <!-- Left: Logo -->
+      <div class="flex-shrink-0 z-10">
+        <img src="/assets//enencia-logo.png" alt="Enencia Logo" class="h-8" />
+      </div>
+
+      <!-- Center: Nav Links (Absolutely Centered) -->
+      <nav class="absolute left-1/2 transform -translate-x-1/2 flex space-x-6 text-sm text-gray-700">
+        <a href="#" class="hover:text-[#044d7a]">Home</a>
+        <a href="#" class="hover:text-[#044d7a]">About</a>
+        <a href="#" class="hover:text-[#044d7a]">Services</a>
+        <a href="#" class="hover:text-[#044d7a]">Contact</a>
+      </nav>
+
+      <!-- Right: Search Bar -->
+      <div class="relative z-10">
+        <input type="text" placeholder="Search"
+          class="border border-blue-900 rounded-full pl-4 pr-10 py-1 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-500">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile View -->
+    <div class="sm:hidden flex justify-between items-center">
+      <!-- Logo -->
+      <img src="/assets//enencia-logo.png" alt="Enencia Logo" class="h-8" />
+
+      <!-- Hamburger Menu -->
+      <button onclick="toggleMenu()" class="text-gray-700 focus:outline-none">
+        ☰
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+      class="absolute top-full left-0 right-0 max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-white z-10 sm:hidden shadow-md">
+      <nav class="flex flex-col space-y-2 text-sm text-gray-700">
+        <a href="#" class="hover:text-[#044d7a]">Home</a>
+        <a href="#" class="hover:text-[#044d7a]">About</a>
+        <a href="#" class="hover:text-[#044d7a]">Services</a>
+        <a href="#" class="hover:text-[#044d7a]">Contact</a>
+      </nav>
+      <div class="relative w-full max-w-sm mt-2">
+        <input type="text" placeholder="Search"
+          class="w-full border border-gray-300 rounded-full pl-4 pr-10 py-1 text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-500 text-sm">
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden">
+    <div class="relative pt-10 pb-16 px-4 sm:px-6 md:px-10 lg:px-20">
+      <!-- Text Positioned Left on larger screens, centered on mobile -->
+      <div
+        class="static md:absolute md:left-50 md:top-24 text-center md:text-left z-10 carousel-text transition-opacity duration-500">
+        <h1 class="text-5xl sm:text-5xl md:text-6xl lg:text-8xl leading-tight font-kanilia">BM 1320</h1>
+        <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-kanilia -mt-3 mb-4">Silicon One Piece
+          Toilet</h2>
+        <p class="text-white font-lemonmilk text-base sm:text-lg">700x360x770mm</p>
+        <p class="text-white font-lemonmilk text-base sm:text-lg">S-Trap: 300mm</p>
+      </div>
+
+      <!-- Product Image Centered -->
+      <div class="relative mt-8 md:mt-16 z-20 flex justify-center">
+        <img src="/assets//toilet1.png" alt="Toilet"
+          class="h-auto w-full md:h-[450px] md:w-auto drop-shadow-xl carousel-image transition-opacity duration-500" />
+      </div>
+
+      <!-- Background Overlay -->
+      <div class="absolute top-3/5 left-0 right-0 bottom-0 bg-[#03385a] -z-10"></div>
+
+      <!-- Description -->
+      <p class="text-xs text-blue-100 text-justify mx-4 sm:mx-6 md:mx-10 lg:mx-20">
+        Enencia is a globally recognized brand in the sanitary ware industry, known for its premium quality
+        products, exceptional design standards, and commitment to customer satisfaction. Specializing in the
+        manufacturing and export of a wide range of bathroom solutions, Enencia offers an impressive portfolio
+        that includes washbasins, toilets, urinals, and complete sanitary systems tailored to meet the evolving
+        needs of modern architecture and interior design.
+
+        At Enencia, we understand that the bathroom is not just a functional space but an integral part of daily
+        comfort, hygiene, and aesthetics. That’s why every product we create is a fusion of cutting-edge
+        technology, refined craftsmanship, and attention to detail. Our washbasins are available in multiple
+        styles — wall-mounted, pedestal, countertop, under-counter, and semi-recessed — all crafted with smooth
+        finishes and durable materials that are both visually appealing and easy to maintain.
+
+        <span class="hidden sm:inline">
+          Our range of toilets includes one-piece, two-piece, wall-hung, and smart toilets, each engineered
+          for
+          optimal water efficiency, silent flushing systems, and ease of installation. Enencia’s toilets are
+          compliant with international water-saving and environmental standards, making them ideal for both
+          residential and commercial applications. The designs range from sleek and minimalist to classic and
+          elegant, ensuring there's a perfect model for every type of bathroom setting.
+
+          In the urinals category, Enencia offers waterless and flushing models, with optional sensor-based
+          systems to promote hygiene and reduce water usage. These urinals are widely used in airports, malls,
+          stadiums, schools, and office complexes due to their efficiency, durability, and low maintenance
+          requirements.
+
+          Beyond individual products, Enencia provides full bathroom solutions — including matching
+          accessories
+          and installation systems — designed to simplify planning for architects, developers, and
+          contractors.
+          Whether for large construction projects or boutique renovation work, we support clients with
+          technical
+          drawings, product samples, and after-sales service.
+
+          One of the defining features of Enencia is our strong commitment to quality. All our products
+          undergo
+          rigorous quality testing to ensure they meet the highest global standards in terms of durability,
+          resistance, hygiene, and finish. Our materials are sourced from trusted suppliers, and our
+          manufacturing
+          units are equipped with state-of-the-art machinery, operated by skilled technicians and engineers.
+        </span>
+      </p>
+
+      <!-- Arrows -->
+      <button onclick="prevSlide()"
+        class="absolute left-2 md:left-10 top-[40%] transform -translate-y-1/2 bg-transparent border border-white/60 hover:bg-white/50 p-3 rounded-full text-white z-30">
+        ←
+      </button>
+      <button onclick="nextSlide()"
+        class="absolute right-2 md:right-10 top-[40%] transform -translate-y-1/2 bg-transparent border border-white/60 hover:bg-white/50 p-3 rounded-full text-white z-30">
+        →
+      </button>
+    </div>
+  </section>
+
+  <!-- Product Categories Section from test.html -->
+  <section class="py-8 sm:py-16 bg-white inter-font pb-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Premium Badges Row -->
+      <div
+        class="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-blue-800 mb-8 sm:mb-16">
+
+        <!-- Premium -->
+        <div class="flex items-center gap-2 justify-center">
+          <div class="border border-blue-200 rounded-lg p-2 sm:p-3 md:p-4">
+            <i class="fas fa-award text-lg sm:text-xl"></i>
+          </div>
+          <span class="text-xs sm:text-sm md:text-base font-medium">Premium</span>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden sm:block h-8 sm:h-10 w-px bg-gray-200"></div>
+
+        <!-- Durable -->
+        <div class="flex items-center gap-2 justify-center">
+          <div class="border border-blue-200 rounded-lg p-2 sm:p-3 md:p-4">
+            <i class="fas fa-shield-alt text-lg sm:text-xl"></i>
+          </div>
+          <span class="text-xs sm:text-sm md:text-base font-medium">Durable</span>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden sm:block h-8 sm:h-10 w-px bg-gray-200"></div>
+
+        <!-- Hygienic -->
+        <div class="flex items-center gap-2 justify-center">
+          <div class="border border-blue-200 rounded-lg p-2 sm:p-3 md:p-4">
+            <i class="fas fa-hand-sparkles text-lg sm:text-xl"></i>
+          </div>
+          <span class="text-xs sm:text-sm md:text-base font-medium">Hygienic</span>
+        </div>
+
+        <!-- Divider -->
+        <div class="hidden sm:block h-8 sm:h-10 w-px bg-gray-200"></div>
+
+        <!-- Elegant -->
+        <div class="flex items-center gap-2 justify-center">
+          <div class="border border-blue-200 rounded-lg p-2 sm:p-3 md:p-4">
+            <i class="fas fa-gem text-lg sm:text-xl"></i>
+          </div>
+          <span class="text-xs sm:text-sm md:text-base font-medium">Elegant</span>
+        </div>
+      </div>
+
+
+      <!-- Product Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-10 sm:mb-16">
+        <% categories.forEach(category=> { %>
+          <a href="/enencia/category/<%= category._id %>" class="relative group fade-in">
+            <img src="<%= category.image || 'https://via.placeholder.com/600x400' %>" alt="<%= category.name %>"
+              class="w-full h-64 object-cover rounded-lg">
+            <div class="absolute inset-0 bg-black/20 transition-opacity duration-300 rounded-lg"></div>
+            <div class="absolute bottom-4 left-4 text-white text-xl font-semibold">
+              <%= category.name %>
+            </div>
+          </a>
+          <% }) %>
+      </div>
+
+      <!-- Product Listing Section -->
+      <div class="bg-[#d2dee9] rounded-2xl p-6 sm:p-8">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+          <!-- Logo Section -->
+          <div class="mb-6 md:mb-0">
+            <img src="/assets//enencia-logo.png" alt="Enencia Logo" class="h-16 sm:h-20 w-auto" />
+          </div>
+
+          <!-- Product List Section -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 sm:gap-x-16 gap-y-4 text-xs sm:text-sm text-black">
+            <ul class="space-y-2 list-disc list-inside">
+              <li>One Piece Basins</li>
+              <li>Half One Piece Basins</li>
+              <li>Table Top Basins</li>
+              <li>Table Top Basins Black</li>
+              <li>Table Top Basins Colored Series</li>
+              <li>Counter Basins</li>
+              <li>Wash Half Pedestal</li>
+            </ul>
+            <ul class="space-y-2 list-disc list-inside">
+              <li>Wall Hung Closet</li>
+              <li>One Piece Closets</li>
+              <li>One Piece Closets White</li>
+              <li>One Piece Closets Black</li>
+              <li>One Piece Closets Colored Series</li>
+              <li>Water Closets</li>
+              <li>Urinals</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section from test.html -->
+  <section class="py-16 bg-gray-50 inter-font">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Quick Message</h2>
+          <p class="text-gray-600 mb-8">Submit your queries, and we will contact you soon</p>
+
+          <form class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+              <input type="text" placeholder="Enter your full name"
+                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email/Phone</label>
+              <input type="text" placeholder="Enter your medium of contact"
+                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Comments</label>
+              <textarea rows="5" placeholder="Add comment if any..."
+                class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary w-full py-4 text-white font-semibold rounded-lg">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+        <div class="hidden lg:block">
+          <div
+            class="bg-gradient-to-br from-blue-900 to-blue-700 rounded-2xl p-8 h-96 flex items-center justify-center">
+            <div class="w-64 h-48 bg-white rounded-lg shadow-lg flex items-center justify-center">
+              <span class="text-gray-400 text-lg">Bathroom Scene</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer from test.html -->
+  <footer class="bg-blue-900 text-white py-12 inter-font">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-2xl font-bold mb-6">ENENCIA</h3>
+          <div class="space-y-2 text-sm">
+            <p>📧 info@liscoreacademy.com</p>
+            <p>📞 +91 91013 33 2309</p>
+            <p>📍 Abudhabi, UAE</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Carousel Script -->
+  <script>
+    const products = [
+      {
+        image: 'assets/toilet1.png',
+        name: 'BM 1320',
+        variant: 'Silicon Onepiece Toilet',
+        size: '700x360x770mm',
+        strap: 'S-Trap: 300mm'
+      },
+      {
+        image: 'assets/toilet2.png',
+        name: 'BM 1450',
+        variant: 'Glaze Rimless Onepiece',
+        size: '710x370x760mm',
+        strap: 'S-Trap: 220mm'
+      },
+      {
+        image: 'assets/toilet3.png',
+        name: 'BM 1600',
+        variant: 'Compact Wall-Hung Toilet',
+        size: '680x350x740mm',
+        strap: 'S-Trap: 250mm'
+      }
+    ];
+
+    let current = 0;
+
+    const textContainer = document.querySelector('.carousel-text');
+    const imgElement = document.querySelector('.carousel-image');
+    const h1Element = textContainer.querySelector('h1');
+    const h2Element = textContainer.querySelector('h2');
+    const pElements = textContainer.querySelectorAll('p');
+    const sizeElement = pElements[0];
+    const strapElement = pElements[1];
+
+    function updateSlide(direction) {
+      imgElement.classList.add('opacity-0');
+
+      if (direction === 'next') {
+        textContainer.style.transform = 'translateX(-100%)';
+        textContainer.style.opacity = '0';
+      } else {
+        textContainer.style.transform = 'translateX(100%)';
+        textContainer.style.opacity = '0';
+      }
+
+      setTimeout(() => {
+        const product = products[current];
+        imgElement.src = product.image;
+        h1Element.innerText = product.name;
+        h2Element.innerText = product.variant;
+        sizeElement.innerText = product.size;
+        strapElement.innerText = product.strap;
+
+        if (direction === 'next') {
+          textContainer.style.transform = 'translateX(100%)';
+        } else {
+          textContainer.style.transform = 'translateX(-100%)';
+        }
+        textContainer.style.opacity = '0';
+
+        // Trigger reflow to apply the initial position
+        void textContainer.offsetWidth;
+
+        textContainer.style.transform = 'translateX(0)';
+        textContainer.style.opacity = '1';
+
+        imgElement.classList.remove('opacity-0');
+      }, 500);
+    }
+
+    function prevSlide() {
+      current = (current - 1 + products.length) % products.length;
+      updateSlide('prev');
+    }
+
+    function nextSlide() {
+      current = (current + 1) % products.length;
+      updateSlide('next');
+    }
+
+    // Start auto-sliding every 5 seconds
+    setInterval(nextSlide, 5000);
+  </script>
+</body>
+
+</html>

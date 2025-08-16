@@ -1,0 +1,42 @@
+<div class="space-y-6">
+  <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+  
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Brand Count Card -->
+    <div class="bg-white rounded-lg shadow-sm p-6 text-center">
+      <div class="mx-auto bg-green-100 p-3 rounded-full w-12 h-12 flex items-center justify-center">
+        <i class="fas fa-building text-green-600 text-xl"></i>
+      </div>
+      <p class="mt-4 text-3xl font-semibold text-gray-900"><%= brandCount %></p>
+      <p class="mt-1 text-sm font-medium text-gray-600">Total Brands</p>
+    </div>
+    
+    <!-- Category Count Card -->
+    <div class="bg-white rounded-lg shadow-sm p-6 text-center">
+      <div class="mx-auto bg-green-100 p-3 rounded-full w-12 h-12 flex items-center justify-center">
+        <i class="fas fa-list text-green-600 text-xl"></i>
+      </div>
+      <p class="mt-4 text-3xl font-semibold text-gray-900"><%= categoryCount %></p>
+      <p class="mt-1 text-sm font-medium text-gray-600">Total Categories</p>
+    </div>
+    
+    <!-- Product Count Card -->
+    <div class="bg-white rounded-lg shadow-sm p-6 text-center">
+      <div class="mx-auto bg-green-100 p-3 rounded-full w-12 h-12 flex items-center justify-center">
+        <i class="fas fa-box text-green-600 text-xl"></i>
+      </div>
+      <p class="mt-4 text-3xl font-semibold text-gray-900"><%= productCount %></p>
+      <p class="mt-1 text-sm font-medium text-gray-600">Total Products</p>
+    </div>
+  </div>
+  
+  <!-- Quick Links -->
+  <div class="mt-8">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Links</h2>
+    <div class="flex flex-wrap gap-4">
+      <a href="/admin/brands" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Manage Brands</a>
+      <a href="/admin/categories" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Manage Categories</a>
+      <a href="/admin/products" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">Manage Products</a>
+    </div>
+  </div>
+</div>

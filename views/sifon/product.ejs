@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.name %> - Sifon</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .grain-texture {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-black text-white pt-16">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-pink-500/20">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Sifon</a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-gray-300 hover:text-pink-400">Home</a>
+                    <a href="/sifon/products" class="text-pink-400">Shop</a>
+                    <a href="/about" class="text-gray-300 hover:text-pink-400">About</a>
+                    <a href="/contact" class="text-gray-300 hover:text-pink-400">Contact</a>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden p-2 text-gray-300 hover:text-pink-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-black/95 backdrop-blur-md border-b border-pink-500/20">
+                <ul class="py-4">
+                    <li><a href="/" class="block px-4 py-2 text-gray-300 hover:text-pink-400">Home</a></li>
+                    <li><a href="/sifon/products" class="block px-4 py-2 text-pink-400">Shop</a></li>
+                    <li><a href="/about" class="block px-4 py-2 text-gray-300 hover:text-pink-400">About</a></li>
+                    <li><a href="/contact" class="block px-4 py-2 text-gray-300 hover:text-pink-400">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <% if (!product) { %>
+            <div class="min-h-screen bg-black flex items-center justify-center">
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold text-white mb-4">Product Not Found</h1>
+                    <a href="/sifon/products" class="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-full">
+                        Back to Shop
+                    </a>
+                </div>
+            </div>
+        <% } else { %>
+            <!-- Breadcrumb -->
+            <div class="flex items-center text-sm text-gray-400 mb-8">
+                <a href="/" class="hover:text-pink-400">Home</a>
+                <span class="mx-2">/</span>
+                <a href="/sifon/products" class="hover:text-pink-400">Shop</a>
+                <span class="mx-2">/</span>
+                <a href="/sifon/products?category=<%= product.category._id %>" class="hover:text-pink-400"><%= product.category.name %></a>
+                <span class="mx-2">/</span>
+                <span class="text-pink-400"><%= product.name %></span>
+            </div>
+
+            <!-- Back Button -->
+            <a href="/sifon/products" class="flex items-center text-gray-400 hover:text-pink-400 transition-colors duration-300 mb-8">
+                <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Vibes
+            </a>
+
+            <!-- Product Layout -->
+            <div class="grid lg:grid-cols-2 gap-12 mb-16">
+                <!-- Image Gallery -->
+                <div class="space-y-6">
+                    <div class="aspect-square bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl overflow-hidden relative group">
+                        <img id="mainImage" src="<%= (showSketches && product.sketchImages.length > 0 ? product.sketchImages : product.images)[currentImageIndex] || '/placeholder.jpg' %>" alt="<%= product.name %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="grain-texture"></div>
+
+                        <!-- Image Navigation -->
+                        <% if ((showSketches ? product.sketchImages : product.images).length > 1) { %>
+                            <button onclick="changeImage(-1)" class="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/80 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-pink-500/80 transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button onclick="changeImage(1)" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/80 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-pink-500/80 transition-all duration-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                            <!-- Progress Indicator -->
+                            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                                <% (showSketches ? product.sketchImages : product.images).forEach((_, index) => { %>
+                                    <button onclick="setImageIndex(<%= index %>)" class="w-2 h-2 rounded-full transition-all duration-300 <%= index === currentImageIndex ? 'bg-pink-400 w-6' : 'bg-gray-600' %>"></button>
+                                <% }) %>
+                            </div>
+                        <% } %>
+
+                        <!-- Zoom Button -->
+                        <button class="absolute top-4 right-4 w-12 h-12 bg-black/80 backdrop-blur-sm text-white rounded-full flex items-center justify-center hover:bg-pink-500/80 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Thumbnail Strip -->
+                    <% if ((showSketches ? product.sketchImages : product.images).length > 1) { %>
+                        <div class="flex space-x-4 overflow-x-auto pb-2">
+                            <% (showSketches ? product.sketchImages : product.images).forEach((image, index) => { %>
+                                <img src="<%= image || '/placeholder.jpg' %>" alt="<%= product.name %> view <%= index + 1 %>" class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 <%= index === currentImageIndex ? 'border-pink-400' : 'border-gray-700 hover:border-gray-600' %>" onclick="setImageIndex(<%= index %>)">
+                            <% }) %>
+                        </div>
+                    <% } %>
+
+                    <!-- Image Type Toggle -->
+                    <% if (product.sketchImages && product.sketchImages.length > 0) { %>
+                        <div class="flex space-x-4">
+                            <button onclick="toggleImages(false)" class="px-4 py-2 rounded-lg transition-all duration-300 <%= !showSketches ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' %>">
+                                Product Photos
+                            </button>
+                            <button onclick="toggleImages(true)" class="px-4 py-2 rounded-lg transition-all duration-300 <%= showSketches ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'bg-gray-800 text-gray-400 hover:text-white' %>">
+                                Design Sketches
+                            </button>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Product Info -->
+                <div class="space-y-8">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-pink-500/20 text-pink-400 text-sm font-medium rounded-full">
+                                <%= product.category.name %>
+                            </span>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-2 text-gray-400 hover:text-pink-400 transition-colors duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-pink-400 transition-colors duration-300">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <h1 class="text-4xl font-bold text-white mb-4"><%= product.name %></h1>
+
+                        <div class="flex items-center mb-6">
+                            <div class="flex items-center mr-4">
+                                <% for (let i = 0; i < 5; i++) { %>
+                                    <svg class="w-4 h-4 text-pink-400 fill-current" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.97a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.392 2.46a1 1 0 00-.364 1.118l1.286 3.97c.3.921-.755 1.688-1.54 1.118l-3.392-2.46a1 1 0 00-1.175 0l-3.392 2.46c-.784.57-1.838-.197-1.54-1.118l1.286-3.97a1 1 0 00-.364-1.118L2.975 7.397c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.97z" />
+                                    </svg>
+                                <% } %>
+                            </div>
+                            <span class="text-gray-400">(47 reviews)</span>
+                        </div>
+
+                        <div class="text-3xl font-bold text-pink-400 mb-6">$<%= product.price %></div>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-4">Artistic Vision</h3>
+                        <p class="text-gray-300 leading-relaxed"><%= product.description %></p>
+                    </div>
+
+                    <!-- Specifications -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-white mb-4">Technical Features</h3>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <% product.specifications.forEach(spec => { %>
+                                <div class="flex items-center p-3 bg-gradient-to-r from-gray-900/50 to-black/50 border border-gray-800 rounded-lg">
+                                    <div class="w-2 h-2 bg-pink-400 rounded-full mr-3"></div>
+                                    <span class="text-gray-300 text-sm"><%= spec %></span>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="space-y-4">
+                        <button class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-pink-500/25 hover:scale-105 transition-all duration-300">
+                            Request Quote
+                        </button>
+                        <div class="flex space-x-4">
+                            <button class="flex-1 flex items-center justify-center py-3 bg-gray-900/50 border border-gray-700 text-gray-300 font-medium rounded-full hover:border-pink-500/50 hover:text-pink-400 transition-all duration-300">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                Download Moodboard
+                            </button>
+                            <button class="flex-1 py-3 bg-gray-900/50 border border-gray-700 text-gray-300 font-medium rounded-full hover:border-pink-500/50 hover:text-pink-400 transition-all duration-300">
+                                Trade Pricing
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="p-6 bg-gradient-to-r from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl">
+                        <h4 class="text-white font-semibold mb-4">Installation & Care</h4>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li>• Professional installation recommended</li>
+                            <li>• Standard mounting hardware included</li>
+                            <li>• Easy-clean ceramic coating</li>
+                            <li>• 5-year craftsmanship warranty</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <% if (relatedProducts && relatedProducts.length > 0) { %>
+                <section>
+                    <h2 class="text-3xl font-bold text-white mb-8">
+                        Similar <span class="bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">Vibes</span>
+                    </h2>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <% relatedProducts.forEach(relatedProduct => { %>
+                            <a href="/sifon/product/<%= relatedProduct._id %>" class="group relative bg-gradient-to-br from-gray-900/50 to-black/50 border border-gray-800 rounded-2xl overflow-hidden hover:border-pink-500/30 transition-all duration-500 hover:scale-105">
+                                <div class="aspect-square overflow-hidden relative">
+                                    <img src="<%= relatedProduct.images[0] || '/placeholder.jpg' %>" alt="<%= relatedProduct.name %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                    <div class="absolute top-4 left-4 px-3 py-1 bg-black/80 backdrop-blur-sm text-pink-400 font-semibold rounded-full text-sm">
+                                        $<%= relatedProduct.price %>
+                                    </div>
+                                    <div class="grain-texture"></div>
+                                </div>
+                                <div class="p-6">
+                                    <span class="text-xs text-pink-400 font-medium uppercase tracking-wider">
+                                        <%= relatedProduct.category.name %>
+                                    </span>
+                                    <h3 class="text-lg font-bold text-white mt-2 mb-3 group-hover:text-pink-400 transition-colors duration-300">
+                                        <%= relatedProduct.name %>
+                                    </h3>
+                                    <div class="flex items-center text-pink-400 font-medium group-hover:text-purple-400 transition-colors duration-300">
+                                        <span class="mr-2">View Vibe</span>
+                                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    </div>
+                </section>
+            <% } %>
+        <% } %>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative bg-black border-t border-gray-800 py-16">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <p>© 2023 Sifon. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        var currentImageIndex = <%= currentImageIndex || 0 %>;
+        var showSketches = <%= showSketches ? 'true' : 'false' %>;
+        const images = <%= JSON.stringify(showSketches && product.sketchImages.length > 0 ? product.sketchImages : product.images) %>;
+
+        function changeImage(direction) {
+            currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+            updateImage();
+        }
+
+        function setImageIndex(index) {
+            currentImageIndex = index;
+            updateImage();
+        }
+
+        function toggleImages(showSketch) {
+            showSketches = showSketch;
+            currentImageIndex = 0;
+            window.location.href = `/sifon/product/<%= product._id %>?showSketches=${showSketches}&currentImageIndex=${currentImageIndex}`;
+        }
+
+        function updateImage() {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = images[currentImageIndex] || '/placeholder.jpg';
+            const thumbnails = document.querySelectorAll('.cursor-pointer');
+            thumbnails.forEach((t, i) => {
+                t.classList.toggle('border-pink-400', i === currentImageIndex);
+                t.classList.toggle('border-gray-700', i !== currentImageIndex);
+                t.classList.toggle('hover:border-gray-600', i !== currentImageIndex);
+            });
+            const dots = document.querySelectorAll('.rounded-full.w-2.h-2');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('bg-pink-400', i === currentImageIndex);
+                dot.classList.toggle('w-6', i === currentImageIndex);
+                dot.classList.toggle('bg-gray-600', i !== currentImageIndex);
+            });
+        }
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

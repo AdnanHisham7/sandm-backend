@@ -35,6 +35,11 @@
       font-family: 'Inter', sans-serif;
     }
 
+    html,
+    body {
+      overflow-x: hidden;
+    }
+
     .gradient-bg {
       background: radial-gradient(ellipse at bottom center,
           #66b3ff 0%,
@@ -152,9 +157,12 @@
     }
 
     @keyframes floating {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translateY(0px);
       }
+
       50% {
         transform: translateY(-20px);
       }
@@ -292,6 +300,7 @@
       from {
         width: 0;
       }
+
       to {
         width: 100%;
       }
@@ -319,7 +328,6 @@
 
     .mobile-menu a {
       color: white;
-      font-size: 1.5rem;
       padding: 1rem;
       transition: color 0.3s ease;
     }
@@ -373,11 +381,11 @@
     </div>
     <div class="mobile-menu" id="mobile-menu">
       <i class="fas fa-times close-icon" id="close-menu-btn"></i>
-      <a href="#home" class="nav-link">HOME</a>
-      <a href="#about" class="nav-link">ABOUT US</a>
-      <a href="#brands" class="nav-link">OUR BRANDS</a>
-      <a href="#services" class="nav-link">SERVICES</a>
-      <a href="#contact" class="nav-link">CONTACT US</a>
+      <a href="#home" class="nav-link font-light text-sm text-white">HOME</a>
+      <a href="#about" class="nav-link font-light text-sm text-white">ABOUT US</a>
+      <a href="#brands" class="nav-link font-light text-sm text-white">OUR BRANDS</a>
+      <a href="#services" class="nav-link font-light text-sm text-white">SERVICES</a>
+      <a href="#contact" class="nav-link font-light text-sm text-white">CONTACT US</a>
     </div>
   </nav>
 

@@ -152,12 +152,9 @@
     }
 
     @keyframes floating {
-
-      0%,
-      100% {
+      0%, 100% {
         transform: translateY(0px);
       }
-
       50% {
         transform: translateY(-20px);
       }
@@ -295,9 +292,58 @@
       from {
         width: 0;
       }
-
       to {
         width: 100%;
+      }
+    }
+
+    /* Mobile Menu Styles */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: max-content;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 50;
+      transition: right 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .mobile-menu.active {
+      right: 0;
+    }
+
+    .mobile-menu a {
+      color: white;
+      font-size: 1.5rem;
+      padding: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .mobile-menu a:hover {
+      color: #7c3aed;
+    }
+
+    .hamburger-icon {
+      font-size: 1.5rem;
+    }
+
+    .close-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .contact-btn {
+        display: none;
       }
     }
   </style>
@@ -317,13 +363,21 @@
           <a href="#services" class="nav-link font-light text-sm text-white">SERVICES</a>
         </div>
         <a href="#contact"
-          class="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 hover:shadow-lg">
+          class="contact-btn bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 hover:shadow-lg">
           Contact Us
         </a>
-        <button class="md:hidden text-white" id="mobile-menu-btn">
+        <button class="md:hidden text-white hamburger-icon" id="mobile-menu-btn">
           <i class="fas fa-bars"></i>
         </button>
       </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <i class="fas fa-times close-icon" id="close-menu-btn"></i>
+      <a href="#home" class="nav-link">HOME</a>
+      <a href="#about" class="nav-link">ABOUT US</a>
+      <a href="#brands" class="nav-link">OUR BRANDS</a>
+      <a href="#services" class="nav-link">SERVICES</a>
+      <a href="#contact" class="nav-link">CONTACT US</a>
     </div>
   </nav>
 
@@ -577,7 +631,7 @@
           below, and we'll get back to you soon.</p>
       </div>
       <div class="max-w-3xl mx-auto">
-        <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+        <div class="space-y-6">
           <input type="hidden" name="access_key" value="9b3d27e9-d24c-4292-a7a8-1d55ca30f518" />
           <div class="grid md:grid-cols-2 gap-6">
             <input type="text" name="name" placeholder="Your Name"
@@ -589,10 +643,10 @@
             class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
           <textarea name="message" placeholder="Your Message" rows="6"
             class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"></textarea>
-          <button type="submit" class="btn-primary w-full py-4 text-white rounded-full font-semibold">
+          <button type="button" class="btn-primary w-full py-4 text-white rounded-full font-semibold">
             Send Message
           </button>
-        </form>
+        </div>
       </div>
     </div>
   </section>
@@ -643,7 +697,30 @@
         document.querySelector(this.getAttribute('href')).scrollIntoView({
           behavior: 'smooth'
         });
+        // Close mobile menu after clicking a link
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.remove('active');
       });
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.remove('active');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        mobileMenu.classList.remove('active');
+      }
     });
 
     // Accordion functionality

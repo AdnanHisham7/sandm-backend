@@ -4,28 +4,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S&M Group - Crafting Digital Presence for Visionary Brands</title>
+  <title>S&M Group - Supplying and Distributing Sanitary Ware Brands</title>
   <meta name="description"
-    content="S&M Group empowers visionary brands with expert marketing strategies, efficient distribution networks, and comprehensive product management. Discover our services and brands.">
+    content="S&M Group supports and distributes leading ceramic brands such as Livora Ceramics, Sifon Ceramics, and Enencia Ceramics. Explore our wide range of closets, toilets, washbasins, table tops, and sanitary wares.">
   <meta name="keywords"
-    content="S&M Group, digital marketing, brand management, product distribution, visionary brands, marketing strategies">
+    content="S&M Group, ceramic distribution, sanitary ware, closets, toilets, washbasins, table tops, Livora Ceramics, Sifon Ceramics, Enencia Ceramics, ceramic supplier">
   <meta name="author" content="S&M Group">
   <meta name="robots" content="index, follow">
   <meta name="googlebot" content="index, follow">
-  <meta property="og:title" content="S&M Group - Crafting Digital Presence for Visionary Brands">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="S&M Group - Supplying and Distributing Sanitary Ware Brands">
   <meta property="og:description"
-    content="Empowering brands through marketing and distribution excellence. Explore our services and subsidiary brands at S&M Group.">
+    content="Trusted distributor of premium ceramic brands like Livora Ceramics, Sifon Ceramics, and Enencia Ceramics. Discover closets, toilets, washbasins, table tops, and sanitary ware products.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.sandmgroup.in">
   <meta property="og:image" content="https://www.sandmgroup.in/assets/logo.png">
   <meta property="og:site_name" content="S&M Group">
+
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="S&M Group - Crafting Digital Presence for Visionary Brands">
+  <meta name="twitter:title" content="S&M Group - Supplying and Distributing Sanitary Ware Brands">
   <meta name="twitter:description"
-    content="Empowering brands through marketing and distribution excellence. Explore our services and subsidiary brands at S&M Group.">
+    content="S&M Group supports and distributes top ceramic brands including Livora Ceramics, Sifon Ceramics, and Enencia Ceramics. Explore closets, toilets, washbasins, table tops, and sanitary wares.">
   <meta name="twitter:image" content="https://www.sandmgroup.in/assets/logo.png">
+
+  <!-- Canonical & Assets -->
   <link rel="canonical" href="https://www.sandmgroup.in">
   <link rel="icon" href="/assets/logo.png" type="image/x-icon">
+
+  <!-- Styles & Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -539,7 +547,8 @@
                 <%= brand.description || 'No description available' %>
               </p>
               <div class="flex justify-between items-center">
-                <a href="<%= brand.url %>" target="_blank" class="flex items-center text-purple-600 font-semibold text-sm sm:text-base">
+                <a href="<%= brand.url %>" target="_blank"
+                  class="flex items-center text-purple-600 font-semibold text-sm sm:text-base">
                   <span>Visit <%= brand.name %></span>
                   <i class="fas fa-arrow-right ml-2"></i>
                 </a>

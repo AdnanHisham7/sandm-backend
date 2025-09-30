@@ -9,6 +9,7 @@ require("dotenv").config();
 
 const cors = require('cors');
 
+
 const app = express();
 
 app.use(cors({
@@ -17,7 +18,8 @@ app.use(cors({
     'https://livora.sandmgroup.in',      // subdomain
     'https://enencia.sandmgroup.in',      // subdomain
     'https://www.sandmgroup.in',        // main domain  (optional)
-    'https://sandmgroup.in'             // optional
+    'https://sandmgroup.in'    ,         // optional
+    'http://localhost:5173',
   ],
   methods: ['GET'],
   credentials: true
@@ -35,6 +37,7 @@ mongoose
 // Middleware
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // app.use(helmet());

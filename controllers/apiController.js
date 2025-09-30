@@ -1,6 +1,7 @@
 const Brand = require("../models/Brand");
 const Category = require("../models/Category");
 const Product = require("../models/Product");
+const Visitor = require("../models/Visitor");
 
 exports.getCategoriesByBrand = async (req, res) => {
   try {
@@ -8,7 +9,6 @@ exports.getCategoriesByBrand = async (req, res) => {
       name: new RegExp(`^${req.params.brandName}$`, "i"),
     });
 
-    console.log(req.params.brandName, brand, "is not working or yesss");
     if (!brand) {
       return res.status(404).json({ message: "Brand not found" });
     }
@@ -62,5 +62,33 @@ exports.getProduct = async (req, res) => {
     res.json(product);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+exports.trackVisitors = async (req, res) => {
+  console.log("Trackng a VISIR=TORRRRRRRRRRRRRRRRR")
+  const { brand, visitorId } = req.body;
+
+  if (!brand || !["livora", "enencia", "sifon"].includes(brand)) {
+    return res.status(400).send("Invalid brand.");
+  }
+
+  if (!visitorId) {
+    return res.status(400).send("Missing visitorId.");
+  }
+
+  try {
+    const existingVisitor = await Visitor.findOne({ visitorId, brand });
+
+    if (existingVisitor) {
+      return res.status(200).send("Visitor already tracked.");
+    }
+
+    const newVisitor = new Visitor({ brand, visitorId });
+    await newVisitor.save();
+    res.status(201).send("Visitor tracked successfully.");
+  } catch (error) {
+    console.error("Error tracking visitor:", error);
+    res.status(500).send("Server error.");
   }
 };

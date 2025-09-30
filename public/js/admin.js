@@ -99,10 +99,14 @@ document.addEventListener("DOMContentLoaded", function () {
 function openBrandModal(brandId = null) {
   const modal = document.getElementById("brandModal");
   const form = document.getElementById("brandForm");
+  const logoPreview = document.getElementById("brandLogoPreview");
+  
+  // Reset form and clear previous content
   form.reset();
   document.getElementById("brandId").value = "";
-  const existingInput = form.querySelector('input[name="currentLogo"]');
-  if (existingInput) existingInput.remove();
+  form.querySelectorAll('input[name="currentLogo"]').forEach((el) => el.remove());
+  logoPreview.innerHTML = "";
+  document.querySelector('input[name="logo"]').value = "";
 
   if (brandId) {
     fetch(`/admin/brands/${brandId}`)
@@ -112,11 +116,25 @@ function openBrandModal(brandId = null) {
         document.getElementById("name").value = brand.name;
         document.getElementById("description").value = brand.description || "";
         document.getElementById("url").value = brand.url || "";
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "currentLogo";
-        input.value = brand.logo || "";
-        form.appendChild(input);
+
+        // Populate existing logo
+        if (brand.logo) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "currentLogo";
+          input.value = brand.logo;
+          form.appendChild(input);
+
+          const div = document.createElement("div");
+          div.className = "relative";
+          div.innerHTML = `
+            <img src="${brand.logo}" alt="Brand Logo" class="w-full h-24 object-cover rounded-lg">
+            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentLogo', '${brand.logo}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          logoPreview.appendChild(div);
+        }
       })
       .catch((error) => console.error("Error fetching brand:", error));
   }
@@ -131,10 +149,14 @@ function closeBrandModal() {
 function openCategoryModal(categoryId = null) {
   const modal = document.getElementById("categoryModal");
   const form = document.getElementById("categoryForm");
+  const imagePreview = document.getElementById("categoryImagePreview");
+  
+  // Reset form and clear previous content
   form.reset();
   document.getElementById("categoryId").value = "";
-  const existingInput = form.querySelector('input[name="currentImage"]');
-  if (existingInput) existingInput.remove();
+  form.querySelectorAll('input[name="currentImage"]').forEach((el) => el.remove());
+  imagePreview.innerHTML = "";
+  document.querySelector('input[name="image"]').value = "";
 
   if (categoryId) {
     fetch(`/admin/categories/${categoryId}`)
@@ -142,13 +164,26 @@ function openCategoryModal(categoryId = null) {
       .then((category) => {
         document.getElementById("categoryId").value = category._id;
         document.getElementById("catName").value = category.name;
-        document.getElementById("catDescription").value =
-          category.description || "";
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "currentImage";
-        input.value = category.image || "";
-        form.appendChild(input);
+        document.getElementById("catDescription").value = category.description || "";
+
+        // Populate existing image
+        if (category.image) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "currentImage";
+          input.value = category.image;
+          form.appendChild(input);
+
+          const div = document.createElement("div");
+          div.className = "relative";
+          div.innerHTML = `
+            <img src="${category.image}" alt="Category Image" class="w-full h-24 object-cover rounded-lg">
+            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentImage', '${category.image}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          imagePreview.appendChild(div);
+        }
       })
       .catch((error) => console.error("Error fetching category:", error));
   }
@@ -163,6 +198,10 @@ function closeCategoryModal() {
 function openProductModal(productId = null) {
   const modal = document.getElementById("productModal");
   const form = document.getElementById("productForm");
+  const productImagesPreview = document.getElementById("productImagesPreview");
+  const sketchImagesPreview = document.getElementById("sketchImagesPreview");
+
+  // Reset form and clear previous content
   form.reset();
   document.getElementById("productId").value = "";
   form
@@ -171,32 +210,71 @@ function openProductModal(productId = null) {
   form
     .querySelectorAll('input[name="currentSketchImages"]')
     .forEach((el) => el.remove());
+  productImagesPreview.innerHTML = "";
+  sketchImagesPreview.innerHTML = "";
+
+  const specsContainer = document.getElementById("specsContainer");
+  specsContainer.innerHTML = "";
 
   if (productId) {
     fetch(`/admin/products/${productId}`)
       .then((response) => response.json())
       .then((product) => {
+        // Populate form fields
         document.getElementById("productId").value = product._id;
         document.getElementById("prodName").value = product.name;
         document.getElementById("prodDescription").value =
           product.description || "";
         document.getElementById("prodCategory").value = product.category._id;
-        product.images.forEach((img) => {
+        document.getElementById("prodFeatured").checked = product.featured;
+
+        // Populate existing product images
+        product.images.forEach((img, index) => {
+          // Add hidden input for current images
           const input = document.createElement("input");
           input.type = "hidden";
           input.name = "currentImages";
           input.value = img;
           form.appendChild(input);
+
+          // Create image preview
+          const div = document.createElement("div");
+          div.className = "relative";
+          div.innerHTML = `
+            <img src="${img}" alt="Product Image ${
+            index + 1
+          }" class="w-full h-24 object-cover rounded-lg">
+            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentImages', '${img}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          productImagesPreview.appendChild(div);
         });
-        product.sketchImages.forEach((img) => {
+
+        // Populate existing sketch images
+        product.sketchImages.forEach((img, index) => {
+          // Add hidden input for current sketch images
           const input = document.createElement("input");
           input.type = "hidden";
           input.name = "currentSketchImages";
           input.value = img;
           form.appendChild(input);
+
+          // Create sketch image preview
+          const div = document.createElement("div");
+          div.className = "relative";
+          div.innerHTML = `
+            <img src="${img}" alt="Sketch Image ${
+            index + 1
+          }" class="w-full h-24 object-cover rounded-lg">
+            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentSketchImages', '${img}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+          sketchImagesPreview.appendChild(div);
         });
-        const specsContainer = document.getElementById("specsContainer");
-        specsContainer.innerHTML = "";
+
+        // Populate specifications
         product.specifications.forEach((spec) => {
           const div = document.createElement("div");
           div.className = "flex space-x-2";
@@ -210,6 +288,16 @@ function openProductModal(productId = null) {
       .catch((error) => console.error("Error fetching product:", error));
   }
   modal.classList.remove("hidden");
+}
+
+// Helper function to remove hidden input for deleted images
+function removeImageInput(name, value) {
+  const inputs = document.querySelectorAll(`input[name="${name}"]`);
+  inputs.forEach((input) => {
+    if (input.value === value) {
+      input.remove();
+    }
+  });
 }
 
 function closeProductModal() {
@@ -344,3 +432,42 @@ async function deleteProduct() {
     alert("Error deleting product");
   }
 }
+
+// Handle file input previews
+document.querySelector('input[name="images"]').addEventListener('change', function (e) {
+  const previewContainer = document.getElementById("productImagesPreview");
+  Array.from(e.target.files).forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const div = document.createElement("div");
+      div.className = "relative";
+      div.innerHTML = `
+        <img src="${event.target.result}" alt="New Product Image ${index + 1}" class="w-full h-24 object-cover rounded-lg">
+        <button type="button" onclick="this.parentNode.remove()" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      previewContainer.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+document.querySelector('input[name="sketchImages"]').addEventListener('change', function (e) {
+  const previewContainer = document.getElementById("sketchImagesPreview");
+  Array.from(e.target.files).forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const div = document.createElement("div");
+      div.className = "relative";
+      div.innerHTML = `
+        <img src="${event.target.result}" alt="New Sketch Image ${index + 1}" class="w-full h-24 object-cover rounded-lg">
+        <button type="button" onclick="this.parentNode.remove()" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      previewContainer.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+});

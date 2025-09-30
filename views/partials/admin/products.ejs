@@ -1,5 +1,4 @@
 <div class="space-y-6">
-  <!-- Header -->
   <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
     <div>
       <h1 class="text-2xl font-bold text-gray-900">Products</h1>
@@ -11,29 +10,26 @@
     </button>
   </div>
 
-  <!-- Brand Selector -->
   <div class="mb-6">
     <label for="brandSelect" class="block mb-2 font-semibold text-gray-700">Select a Brand:</label>
     <select id="brandSelect"
       class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
       <option value="">-- Choose a brand --</option>
       <% brands.forEach(brand=> { %>
-        <option value="<%= brand._id %>" <%=String(selectedBrand)===String(brand._id) ? 'selected' : '' %>><%=
-            brand.name %>
+        <option value="<%= brand._id %>" <%=String(selectedBrand)===String(brand._id) ? 'selected' : '' %>>
+          <%= brand.name %>
         </option>
         <% }) %>
     </select>
   </div>
 
   <% if (selectedBrand) { %>
-    <!-- Search Bar -->
     <div class="relative max-w-md">
       <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
       <input type="text" placeholder="Search products"
         class="search-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent">
     </div>
 
-    <!-- Products Table -->
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
@@ -98,90 +94,83 @@
       </div>
     </div>
 
-    <!-- Product Modal -->
     <div id="productModal" role="dialog" aria-modal="true"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden overflow-y-auto">
-      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] h-full sm:h-auto flex flex-col">
-        <form id="productForm" method="post" enctype="multipart/form-data" class="flex-1 overflow-y-auto p-6 space-y-6">
+      <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] h-full sm:h-auto flex flex-col">
+        <form id="productForm" method="post" enctype="multipart/form-data" class="flex-1 overflow-y-auto p-6">
           <input type="hidden" id="productId">
           <input type="hidden" name="brand" value="<%= selectedBrand %>">
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="prodName" class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-              <input type="text" id="prodName" name="name" required
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-            </div>
-            <div>
-              <label for="prodCategory" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-              <select id="prodCategory" name="category" required
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-                <option value="">Select Category</option>
-                <% categories.forEach(category=> { %>
-                  <option value="<%= category._id %>">
-                    <%= category.name %>
-                  </option>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <div class="space-y-6">
+              <div>
+                <label for="prodName" class="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
+                <input type="text" id="prodName" name="name" required
+                  class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+              </div>
+              
+              <div>
+                <label for="prodCategory" class="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                <select id="prodCategory" name="category" required
+                  class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                  <option value="">Select Category</option>
+                  <% categories.forEach(category=> { %>
+                    <option value="<%= category._id %>">
+                      <%= category.name %>
+                    </option>
                   <% }) %>
-              </select>
-            </div>
-          </div>
+                </select>
+              </div>
 
-          <div>
-            <label for="prodDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea id="prodDescription" name="description" rows="3"
-              class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"></textarea>
-          </div>
-
-          <div>
-            <label for="prodFeatured" class="block text-sm font-medium text-gray-700 mb-1">Featured</label>
-            <input type="checkbox" id="prodFeatured" name="featured" class="form-checkbox h-5 w-5 text-green-600">
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Product Images</label>
-              <input type="file" name="images" multiple accept="image/*"
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+              <div>
+                <label for="prodDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="prodDescription" name="description" rows="4"
+                  class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"></textarea>
+              </div>
+              
+              <div class="flex items-center space-x-2 pt-2">
+                <input type="checkbox" id="prodFeatured" name="featured" class="form-checkbox h-5 w-5 text-green-600 rounded">
+                <label for="prodFeatured" class="text-sm font-medium text-gray-700">Mark as Featured</label>
+              </div>
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Sketch Images</label>
-              <input type="file" name="sketchImages" multiple accept="image/*"
-                class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+            <div class="space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Product Images</label>
+                <input type="file" name="images" multiple accept="image/*"
+                  class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                <div id="productImagesPreview" class="mt-2 grid grid-cols-3 gap-2"></div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Sketch Images</label>
+                <input type="file" name="sketchImages" multiple accept="image/*"
+                  class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                <div id="sketchImagesPreview" class="mt-2 grid grid-cols-3 gap-2"></div>
+              </div>
+
+              <div class="pt-4 border-t">
+                <label class="block text-sm font-medium text-gray-700 mb-3">Specifications (Max 6)</label>
+                <div id="specsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-2"></div>
+                <button type="button" onclick="addSpecInput()"
+                  class="mt-2 inline-flex items-center px-3 py-1 text-sm text-green-600 hover:text-green-800">
+                  <i class="fas fa-plus mr-1"></i>Add Specification
+                </button>
+              </div>
             </div>
           </div>
-
-
-          <% if (typeof product !=='undefined' ) { %>
-            <% product.images.forEach(img=> { %>
-              <input type="hidden" name="currentImages" value="<%= img %>">
-              <% }) %>
-                <% product.sketchImages.forEach(img=> { %>
-                  <input type="hidden" name="currentSketchImages" value="<%= img %>">
-                  <% }) %>
-                    <% } %>
-
-                      <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-3">Specifications (Max 6)</label>
-                        <div id="specsContainer" class="space-y-2 max-h-48 overflow-y-auto"></div>
-                        <button type="button" onclick="addSpecInput()"
-                          class="inline-flex items-center px-3 py-1 text-sm text-green-600 hover:text-green-800">
-                          <i class="fas fa-plus mr-1"></i>Add Specification
-                        </button>
-                      </div>
         </form>
 
-        <!-- Footer Buttons -->
-        <div class="flex space-x-3 p-6 border-t border-gray-200">
+        <div class="flex space-x-3 p-6 border-t border-gray-200 bg-gray-50 rounded-b-lg">
           <button type="button" onclick="closeProductModal()"
-            class="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
+            class="flex-1 px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
           <button type="submit" form="productForm"
-            class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Save</button>
+            class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Save Product</button>
         </div>
       </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div id="confirmDeleteProductModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
       <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
@@ -202,7 +191,6 @@
       <% } %>
 </div>
 
-<!-- Scroll script for editing -->
 <script>
   function scrollModalToBottomIfEditing(productId) {
     if (productId) {

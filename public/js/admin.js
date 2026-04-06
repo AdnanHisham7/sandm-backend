@@ -100,11 +100,13 @@ function openBrandModal(brandId = null) {
   const modal = document.getElementById("brandModal");
   const form = document.getElementById("brandForm");
   const logoPreview = document.getElementById("brandLogoPreview");
-  
+
   // Reset form and clear previous content
   form.reset();
   document.getElementById("brandId").value = "";
-  form.querySelectorAll('input[name="currentLogo"]').forEach((el) => el.remove());
+  form
+    .querySelectorAll('input[name="currentLogo"]')
+    .forEach((el) => el.remove());
   logoPreview.innerHTML = "";
   document.querySelector('input[name="logo"]').value = "";
 
@@ -150,11 +152,13 @@ function openCategoryModal(categoryId = null) {
   const modal = document.getElementById("categoryModal");
   const form = document.getElementById("categoryForm");
   const imagePreview = document.getElementById("categoryImagePreview");
-  
+
   // Reset form and clear previous content
   form.reset();
   document.getElementById("categoryId").value = "";
-  form.querySelectorAll('input[name="currentImage"]').forEach((el) => el.remove());
+  form
+    .querySelectorAll('input[name="currentImage"]')
+    .forEach((el) => el.remove());
   imagePreview.innerHTML = "";
   document.querySelector('input[name="image"]').value = "";
 
@@ -164,7 +168,8 @@ function openCategoryModal(categoryId = null) {
       .then((category) => {
         document.getElementById("categoryId").value = category._id;
         document.getElementById("catName").value = category.name;
-        document.getElementById("catDescription").value = category.description || "";
+        document.getElementById("catDescription").value =
+          category.description || "";
 
         // Populate existing image
         if (category.image) {
@@ -230,24 +235,22 @@ function openProductModal(productId = null) {
 
         // Populate existing product images
         product.images.forEach((img, index) => {
-          // Add hidden input for current images
           const input = document.createElement("input");
           input.type = "hidden";
           input.name = "currentImages";
-          input.value = img;
+          input.value = JSON.stringify(img); // ✅ FIX
           form.appendChild(input);
 
-          // Create image preview
           const div = document.createElement("div");
           div.className = "relative";
           div.innerHTML = `
-            <img src="${img}" alt="Product Image ${
-            index + 1
-          }" class="w-full h-24 object-cover rounded-lg">
-            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentImages', '${img}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
-              <i class="fas fa-times"></i>
-            </button>
-          `;
+    <img src="${img.url}" class="w-full h-24 object-cover rounded-lg"> <!-- ✅ FIX -->
+    <button type="button"
+      onclick="this.parentNode.remove(); removeImageInput('currentImages', '${encodeURIComponent(JSON.stringify(img))}')"
+      class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
           productImagesPreview.appendChild(div);
         });
 
@@ -257,17 +260,17 @@ function openProductModal(productId = null) {
           const input = document.createElement("input");
           input.type = "hidden";
           input.name = "currentSketchImages";
-          input.value = img;
+          input.value = JSON.stringify(img);
           form.appendChild(input);
 
           // Create sketch image preview
           const div = document.createElement("div");
           div.className = "relative";
           div.innerHTML = `
-            <img src="${img}" alt="Sketch Image ${
-            index + 1
-          }" class="w-full h-24 object-cover rounded-lg">
-            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentSketchImages', '${img}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
+            <img src="${img.url}" alt="Sketch Image ${
+              index + 1
+            }" class="w-full h-24 object-cover rounded-lg">
+            <button type="button" onclick="this.parentNode.remove(); removeImageInput('currentSketchImages', '${encodeURIComponent(JSON.stringify(img))}')" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
               <i class="fas fa-times"></i>
             </button>
           `;
@@ -292,9 +295,11 @@ function openProductModal(productId = null) {
 
 // Helper function to remove hidden input for deleted images
 function removeImageInput(name, value) {
+  const decoded = decodeURIComponent(value);
   const inputs = document.querySelectorAll(`input[name="${name}"]`);
+
   inputs.forEach((input) => {
-    if (input.value === value) {
+    if (input.value === decoded) {
       input.remove();
     }
   });
@@ -321,7 +326,7 @@ function addSketchImageInput(value = "") {
   div.className = "flex space-x-2";
   div.innerHTML = `
     <input type="url" name="sketchImages[]" value="${value}" placeholder="https://example.com/sketch.jpg" class="flex-1 p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
-    <button type="button" onclick="this.parentNode.remove()" class="p-2  class="p-2 text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
+    <button type="button" onclick="this.parentNode.remove()" class="p-2 text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></button>
   `;
   container.appendChild(div);
 }
@@ -434,40 +439,46 @@ async function deleteProduct() {
 }
 
 // Handle file input previews
-document.querySelector('input[name="images"]').addEventListener('change', function (e) {
-  const previewContainer = document.getElementById("productImagesPreview");
-  Array.from(e.target.files).forEach((file, index) => {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const div = document.createElement("div");
-      div.className = "relative";
-      div.innerHTML = `
+const imageInput = document.querySelector('input[name="images"]');
+if (imageInput) {
+  imageInput.addEventListener("change", function (e) {
+    const previewContainer = document.getElementById("productImagesPreview");
+    Array.from(e.target.files).forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const div = document.createElement("div");
+        div.className = "relative";
+        div.innerHTML = `
         <img src="${event.target.result}" alt="New Product Image ${index + 1}" class="w-full h-24 object-cover rounded-lg">
         <button type="button" onclick="this.parentNode.remove()" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
           <i class="fas fa-times"></i>
         </button>
       `;
-      previewContainer.appendChild(div);
-    };
-    reader.readAsDataURL(file);
+        previewContainer.innerHTML = "";
+      };
+      reader.readAsDataURL(file);
+    });
   });
-});
+}
 
-document.querySelector('input[name="sketchImages"]').addEventListener('change', function (e) {
-  const previewContainer = document.getElementById("sketchImagesPreview");
-  Array.from(e.target.files).forEach((file, index) => {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const div = document.createElement("div");
-      div.className = "relative";
-      div.innerHTML = `
+const sketchImageInput = document.querySelector('input[name="sketchImages"]');
+if (sketchImageInput) {
+  sketchImageInput.addEventListener("change", function (e) {
+    const previewContainer = document.getElementById("sketchImagesPreview");
+    Array.from(e.target.files).forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const div = document.createElement("div");
+        div.className = "relative";
+        div.innerHTML = `
         <img src="${event.target.result}" alt="New Sketch Image ${index + 1}" class="w-full h-24 object-cover rounded-lg">
         <button type="button" onclick="this.parentNode.remove()" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 text-xs">
           <i class="fas fa-times"></i>
         </button>
       `;
-      previewContainer.appendChild(div);
-    };
-    reader.readAsDataURL(file);
+        previewContainer.appendChild(div);
+      };
+      reader.readAsDataURL(file);
+    });
   });
-});
+}

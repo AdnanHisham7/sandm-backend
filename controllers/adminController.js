@@ -3,8 +3,19 @@ const Brand = require("../models/Brand");
 const Category = require("../models/Category");
 const Product = require("../models/Product");
 const Visitor = require("../models/Visitor");
-const path = require("path");
-const fs = require("fs").promises;
+const cloudinary = require("../config/cloudinary");
+const uploadToCloudinary = require("../utils/cloudinaryUpload");
+
+const uploadImages = async (files) => {
+  const results = await Promise.all(
+    files.map((file) => uploadToCloudinary(file)),
+  );
+
+  return results.map((r) => ({
+    url: r.secure_url,
+    public_id: r.public_id,
+  }));
+};
 
 exports.getDashboard = async (req, res) => {
   try {
@@ -79,7 +90,7 @@ exports.getProducts = async (req, res) => {
   const categoryIds = categories.map((cat) => cat._id);
   const products = selectedBrand
     ? await Product.find({ category: { $in: categoryIds } }).populate(
-        "category"
+        "category",
       )
     : [];
   res.render("admin-dashboard", {
@@ -103,9 +114,25 @@ exports.getProductById = async (req, res) => {
 
 exports.addBrand = async (req, res) => {
   const { name, description, url } = req.body;
-  const logo = req.file ? "/uploads/" + req.file.filename : "";
+
+  let logo = "";
+  let logoPublicId = "";
+
+  if (req.file) {
+    const result = await uploadToCloudinary(req.file);
+    logo = result.secure_url;
+    logoPublicId = result.public_id;
+  }
+
   try {
-    const brand = new Brand({ name, description, logo, url });
+    const brand = new Brand({
+      name,
+      description,
+      url,
+      logo,
+      logoPublicId,
+    });
+
     await brand.save();
     res.redirect("/admin/brands");
   } catch (err) {
@@ -116,29 +143,36 @@ exports.addBrand = async (req, res) => {
 exports.updateBrand = async (req, res) => {
   const { id } = req.params;
   const { name, description, currentLogo, url } = req.body;
-  const newLogo = req.file ? "/uploads/" + req.file.filename : currentLogo;
 
   try {
-    // Fetch the existing brand to compare logos
     const existingBrand = await Brand.findById(id);
     if (!existingBrand) {
       return res.status(404).json({ error: "Brand not found" });
     }
 
-    // Delete old logo if replaced or removed
-    if (existingBrand.logo && newLogo !== existingBrand.logo) {
-      const filePath = path.join(__dirname, "../public", existingBrand.logo);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
+    let logo = currentLogo;
+    let logoPublicId = existingBrand.logoPublicId;
+
+    if (req.file) {
+      // delete old
+      if (existingBrand.logoPublicId) {
+        await cloudinary.uploader.destroy(existingBrand.logoPublicId);
       }
+
+      // upload new
+      const result = await uploadToCloudinary(req.file);
+
+      logo = result.secure_url;
+      logoPublicId = result.public_id;
     }
 
-    await Brand.findByIdAndUpdate(id, { name, description, logo: newLogo, url });
+    await Brand.findByIdAndUpdate(id, {
+      name,
+      description,
+      logo,
+      logoPublicId,
+      url,
+    });
     res.json({ success: true });
   } catch (err) {
     console.error("Error updating brand:", err);
@@ -155,16 +189,8 @@ exports.deleteBrand = async (req, res) => {
     }
 
     // Delete associated logo from the server
-    if (brand.logo) {
-      const filePath = path.join(__dirname, "../public", brand.logo);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
-      }
+    if (brand.logoPublicId) {
+      await cloudinary.uploader.destroy(brand.logoPublicId);
     }
 
     await Brand.findByIdAndDelete(id);
@@ -177,9 +203,22 @@ exports.deleteBrand = async (req, res) => {
 
 exports.addCategory = async (req, res) => {
   const { name, description, brand } = req.body;
-  const image = req.file ? "/uploads/" + req.file.filename : "";
+  let image = "";
+  let imagePublicId = "";
+
+  if (req.file) {
+    const result = await uploadToCloudinary(req.file);
+    image = result.secure_url;
+    imagePublicId = result.public_id;
+  }
   try {
-    const category = new Category({ name, description, image, brand });
+    const category = new Category({
+      name,
+      description,
+      image,
+      imagePublicId,
+      brand,
+    });
     await category.save();
     res.redirect(`/admin/categories?brand=${brand}`);
   } catch (err) {
@@ -199,20 +238,27 @@ exports.updateCategory = async (req, res) => {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    // Delete old image if replaced or removed
-    if (existingCategory.image && newImage !== existingCategory.image) {
-      const filePath = path.join(__dirname, "../public", existingCategory.image);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
+    let image = currentImage;
+    let imagePublicId = existingCategory.imagePublicId;
+
+    if (req.file) {
+      if (existingCategory.imagePublicId) {
+        await cloudinary.uploader.destroy(existingCategory.imagePublicId);
       }
+
+      const result = await uploadToCloudinary(req.file);
+
+      image = result.secure_url;
+      imagePublicId = result.public_id;
     }
 
-    await Category.findByIdAndUpdate(id, { name, description, image: newImage, brand });
+    await Category.findByIdAndUpdate(id, {
+      name,
+      description,
+      image,
+      imagePublicId,
+      brand,
+    });
     res.json({ success: true });
   } catch (err) {
     console.error("Error updating category:", err);
@@ -229,16 +275,8 @@ exports.deleteCategory = async (req, res) => {
     }
 
     // Delete associated image from the server
-    if (category.image) {
-      const filePath = path.join(__dirname, "../public", category.image);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
-      }
+    if (category.imagePublicId) {
+      await cloudinary.uploader.destroy(category.imagePublicId);
     }
 
     await Category.findByIdAndDelete(id);
@@ -252,11 +290,10 @@ exports.deleteCategory = async (req, res) => {
 exports.addProduct = async (req, res) => {
   const { name, description, category, specifications } = req.body;
   const featured = req.body.featured === "on";
-  const images = req.files["images"]
-    ? req.files["images"].map((file) => "/uploads/" + file.filename)
-    : [];
-  const sketchImages = req.files["sketchImages"]
-    ? req.files["sketchImages"].map((file) => "/uploads/" + file.filename)
+  const images = req.files?.images ? await uploadImages(req.files.images) : [];
+
+  const sketchImages = req.files?.sketchImages
+    ? await uploadImages(req.files.sketchImages)
     : [];
   const specs = specifications
     ? (Array.isArray(specifications)
@@ -293,31 +330,36 @@ exports.updateProduct = async (req, res) => {
     currentSketchImages,
   } = req.body;
   const featured = req.body.featured === "on";
-  
+
   // Handle new images
   const newImages = req.files["images"]
-    ? req.files["images"].map((file) => "/uploads/" + file.filename)
+    ? await uploadImages(req.files["images"])
     : [];
+
   const newSketchImages = req.files["sketchImages"]
-    ? req.files["sketchImages"].map((file) => "/uploads/" + file.filename)
+    ? await uploadImages(req.files["sketchImages"])
     : [];
-  
+
   // Handle existing images
   const images = currentImages
     ? Array.isArray(currentImages)
-      ? currentImages
-      : [currentImages]
+      ? currentImages.map((img) =>
+          typeof img === "string" ? JSON.parse(img) : img,
+        )
+      : [JSON.parse(currentImages)]
     : [];
   const sketchImages = currentSketchImages
     ? Array.isArray(currentSketchImages)
-      ? currentSketchImages
-      : [currentSketchImages]
+      ? currentSketchImages.map((img) =>
+          typeof img === "string" ? JSON.parse(img) : img,
+        )
+      : [JSON.parse(currentSketchImages)]
     : [];
-  
+
   // Combine new and existing images
   const updatedImages = [...images, ...newImages];
   const updatedSketchImages = [...sketchImages, ...newSketchImages];
-  
+
   // Handle specifications
   const specs = specifications
     ? (Array.isArray(specifications)
@@ -335,34 +377,18 @@ exports.updateProduct = async (req, res) => {
 
     // Identify removed images
     const removedImages = existingProduct.images.filter(
-      (img) => !updatedImages.includes(img)
+      (img) => !updatedImages.some((i) => i.public_id === img.public_id),
     );
     const removedSketchImages = existingProduct.sketchImages.filter(
-      (img) => !updatedSketchImages.includes(img)
+      (img) => !updatedSketchImages.some((i) => i.public_id === img.public_id),
     );
 
     // Delete removed images from the server
     for (const img of removedImages) {
-      const filePath = path.join(__dirname, "../public", img);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
-      }
+      await cloudinary.uploader.destroy(img.public_id);
     }
     for (const img of removedSketchImages) {
-      const filePath = path.join(__dirname, "../public", img);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
-      }
+      await cloudinary.uploader.destroy(img.public_id);
     }
 
     // Update the product
@@ -393,15 +419,7 @@ exports.deleteProduct = async (req, res) => {
 
     // Delete all associated images from the server
     for (const img of [...product.images, ...product.sketchImages]) {
-      const filePath = path.join(__dirname, "../public", img);
-      try {
-        await fs.unlink(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (err) {
-        if (err.code !== "ENOENT") {
-          console.error(`Error deleting file ${filePath}:`, err);
-        }
-      }
+      await cloudinary.uploader.destroy(img.public_id);
     }
 
     await Product.findByIdAndDelete(id);
